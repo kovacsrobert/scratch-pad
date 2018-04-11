@@ -5,6 +5,14 @@
    
    <body>
       Hello World!<br/>
-      <% out.println("Your IP address is " + request.getRemoteAddr()); %>
+
+    <!-- Hello world example -->
+    <% out.println("Your IP address is " + request.getRemoteAddr()); %>
+
+    <!-- Lifecycle states -->
+  	<%! public void jspInit() { System.out.println("Initialization - jspInit"); } %>
+  	<% System.out.println("Execution"); %>
+  	<%! public void jspDestroy() { System.out.println("Cleanup - jspDestroy"); } %>
+
    </body>
 </html>
