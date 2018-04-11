@@ -47,3 +47,46 @@ Elements of JSP:
 		- syntax: <% ... %> or <jsp:scriptlet>...</jsp:scriptlet>
 	- Declaration: A declaration declares one or more variables or methods that you can use in Java code later in the JSP file.
 		- syntax: <%! ... %> or <jsp:declaration>...</jsp:declaration>
+	- Expression: A JSP expression element contains a scripting language expression that is evaluated, converted to a String, and inserted where the expression appears in the JSP file.
+		- syntax: <%= ... %> or <jsp:expression>...</jsp:expression>
+	- Comments: JSP comment marks text or statements that the JSP container should ignore. A JSP comment is useful when you want to hide or "comment out", a part of your JSP page.
+		- syntax: <%-- ... --%>
+	- Directives: A JSP directive affects the overall structure of the servlet class.
+		- syntax: <%@ ... %>
+		- types:
+			- <%@ page ... %> : Defines page-dependent attributes, such as scripting language, error page, and buffering requirements.
+			- <%@ include ... %> : Includes a file during the translation phase.
+			- <%@ taglib ... %> : Declares a tag library, containing custom actions, used in the page
+	- Actions: JSP actions use constructs in XML syntax to control the behavior of the servlet engine. You can dynamically insert a file, reuse JavaBeans components, forward the user to another page, or generate HTML for the Java plugin.
+		- syntax: <jsp:action_name attribute="value" />
+		- types:
+			- jsp:include : Includes a file at the time the page is requested.
+			- jsp:useBean : Finds or instantiates a JavaBean.
+			- jsp:setProperty : Sets the property of a JavaBean.
+			- jsp:getProperty : Inserts the property of a JavaBean into the output.
+			- jsp:forward : Forwards the requester to a new page.
+			- jsp:plugin : Generates browser-specific code that makes an OBJECT or EMBED tag for the Java plugin.
+			- jsp:element : Defines XML elements dynamically.
+			- jsp:attribute : Defines dynamically-defined XML element's attribute.
+			- jsp:body : Defines dynamically-defined XML element's body.
+			- jsp:text : Used to write template text in JSP pages and documents.
+	- Implicit Objects: JSP supports nine automatically defined variables, which are also called implicit objects.
+		- types:
+			- request : This is the HttpServletRequest object associated with the request.
+			- response : This is the HttpServletResponse object associated with the response to the client.
+			- out : This is the PrintWriter object used to send output to the client.
+			- session : This is the HttpSession object associated with the request.
+			- application : This is the ServletContext object associated with the application context.
+			- config : This is the ServletConfig object associated with the page.
+			- pageContext : This encapsulates use of server-specific features like higher performance JspWriters.
+			- page : This is simply a synonym for this, and is used to call the methods defined by the translated servlet class.
+			- Exception : The Exception object allows the exception data to be accessed by designated JSP.
+	- Control-Flow Statements:
+		- Decision-Making Statements (if, switch)
+		- Loop Statements (for, while, and do…while)
+	- Literals:
+		- Boolean − true and false
+		- Integer − as in Java
+		- Floating point − as in Java
+		- String − with single and double quotes; " is escaped as \", ' is escaped as \', and \ is escaped as \\.
+		- Null − null
