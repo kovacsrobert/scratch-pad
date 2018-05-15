@@ -15,8 +15,14 @@ public class InMemoryUsersConfig {
         // ensure the passwords are encoded properly
         UserBuilder users = User.withDefaultPasswordEncoder();
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(users.username("user").password("password").roles("USER").build());
-        manager.createUser(users.username("admin").password("password").roles("USER", "ADMIN").build());
+        manager.createUser(users.username("user").password("password")
+                .authorities(UserRoles.ROLE_USER)
+                //.roles(UserRoles.USER)
+                .build());
+        manager.createUser(users.username("admin").password("password")
+                .authorities(UserRoles.ROLE_USER, UserRoles.ROLE_ADMIN)
+                //.roles(UserRoles.USER, UserRoles.ADMIN)
+                .build());
         return manager;
     }
 }
