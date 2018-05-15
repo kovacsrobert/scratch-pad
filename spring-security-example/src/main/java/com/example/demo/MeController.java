@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MeController {
 
-    public static final String TEST_PATH = "/test";
+    public static final String PATH = "/test";
 
-    @GetMapping(TEST_PATH)
+    @GetMapping(PATH)
     @RolesAllowed(UserRoles.ROLE_ADMIN)
     public String test() {
         return "Hello, " + SecurityContextHolder.getContext().getAuthentication().getName();

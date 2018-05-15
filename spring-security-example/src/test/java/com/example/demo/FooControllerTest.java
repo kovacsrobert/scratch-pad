@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringJUnit4ClassRunner.class)
-public class MeControllerTest {
+public class FooControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -24,21 +24,20 @@ public class MeControllerTest {
     @Test
     @WithAnonymousUser
     public void shouldBeUnauthorized_withAnonymousUser() throws Exception {
-        mockMvc.perform(get(MeController.PATH))
+        mockMvc.perform(get(FooController.PATH, "bar"))
                 .andExpect(status().isUnauthorized());
     }
     
     @Test
-    @WithMockUser(authorities = { UserRoles.ROLE_USER })
-    public void shouldBeForbidden_withUserRole() throws Exception {
-        mockMvc.perform(get(MeController.PATH))
-                .andExpect(status().isForbidden());
+    public void shouldBeUnauthorized_withNotBarArgument() throws Exception {
+        mockMvc.perform(get(FooController.PATH, "meme"))
+                .andExpect(status().isUnauthorized());
     }
     
     @Test
     @WithMockUser(authorities = { UserRoles.ROLE_ADMIN })
-    public void shouldBeOk_withAdminRole() throws Exception {
-        mockMvc.perform(get(MeController.PATH))
+    public void shouldBeOk_withBarArgument() throws Exception {
+        mockMvc.perform(get(FooController.PATH, "bar"))
                 .andExpect(status().isOk());
     }
 }
