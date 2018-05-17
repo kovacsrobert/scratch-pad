@@ -10,35 +10,35 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.TestExecutionListeners.MergeMode;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners(listeners = { MeTestExecutionListener.class }, mergeMode = MergeMode.MERGE_WITH_DEFAULTS)
 public class MeControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    
+
     @Test
     @WithAnonymousUser
     public void shouldBeUnauthorized_withAnonymousUser() throws Exception {
-        mockMvc.perform(get(MeController.PATH))
-                .andExpect(status().isUnauthorized());
+        mockMvc.perform(get(MeController.PATH)).andExpect(status().isUnauthorized());
     }
-    
+
     @Test
     @WithMockUser(authorities = { UserRoles.ROLE_USER })
     public void shouldBeForbidden_withUserRole() throws Exception {
-        mockMvc.perform(get(MeController.PATH))
-                .andExpect(status().isForbidden());
+        mockMvc.perform(get(MeController.PATH)).andExpect(status().isForbidden());
     }
-    
+
     @Test
     @WithMockUser(authorities = { UserRoles.ROLE_ADMIN })
     public void shouldBeOk_withAdminRole() throws Exception {
-        mockMvc.perform(get(MeController.PATH))
-                .andExpect(status().isOk());
+        mockMvc.perform(get(MeController.PATH)).andExpect(status().isOk());
     }
 }
