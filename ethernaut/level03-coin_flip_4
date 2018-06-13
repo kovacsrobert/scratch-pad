@@ -1,0 +1,26 @@
+Level 3:
+
+level address:				0xd340de695bbc39e72df800dfde78a20d2ed94035
+instance address:			0xc9aa08c053fca14ea14eea9b1516e81666a7e817
+
+! deployed exploit to test network
+	-> exploit code calculate flip and call guess function in target contract while in the same TX
+
+deployed exploit address:	0x91A26Ae3ebbF9f15F8B9a7ffc9aEAbE87F2F8bB8
+							0x4567f3bfccf93c95138d1a419fe24359216ecc3632dc12bd0a46e6eeb19a64ef
+
+TXs:
+	0xc4b3be83afebeb9b280f447848e2596395aec94c9e64d559bfdf7c0597f20c5f - 1
+	0x20c54f1bdce36fafede1d4992d4c377e1eb3bb7a1717c5735589a12afe9db196 - 2
+	0x2c31006c5ac061be1d5a8088d11534bf97bcd696d261bd51e617bba8e5d5a937 - !failed: out of gas
+	0x88b50307079964d475a78423ad4b79506c604864f89441b3b2fde9ede0c87dcb - 3
+	0xde61abd9f53ee9586cc3d35b65cb7eddcc6fca0f546c9d5c62c908a93e3131c2 - 4
+	0xbd690f5da597ef2c286546430d2e172d68de174aea203fb8c1254ce8c9551760 - !failed: out of gas
+	0x24f8c4f500adf110814a46b854f3cd9efa56e1d05adbbee4fd24aa572ec917dc - 5
+	0xee681f32acee57d1a21b0247c1527a0f6d249d0deee31e4ba4f1bd1f48cbee59 - 6
+	0xd912314d8f52114e18d9de117c4443066883e3b5d73bedafda2fdb40dde766c8 - 7
+	0x568f70449ef151cbcd3f1f20a82376f30aac38012d62ae21525ac911c37d735a - 8
+	0x89534bb34c0091394cae1bc8c056d45abaec489821371f7b22c41661f0603a0e - 9
+	0x9c607fe8b0e88ceb55cfc70d8da527881bc025bc7e37a79532cac972626e33e1 - 10
+
+submit TX: 0x12aaad7f068b8bdc8f19abfdc52bfd4e25eef8fbf716f8851ac09dab892e08c8
