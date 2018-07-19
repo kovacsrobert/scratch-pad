@@ -13,5 +13,5 @@ public class Message {
 		message.text = text;
 		return message;
 	}
-	
+
 }
