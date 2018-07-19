@@ -2,17 +2,17 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>chatbot-server</artifactId>
+	<artifactId>chatbot-cliclient</artifactId>
 	<packaging>jar</packaging>
 
-	<name>chatbot-server</name>
+	<name>chatbot-cliclient</name>
 	<url>http://maven.apache.org</url>
 
 	<parent>
 		<groupId>examples</groupId>
 		<artifactId>chatbot</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../chatbot</relativePath>
+		<relativePath>..</relativePath>
 	</parent>
 
 	<dependencies>
@@ -30,7 +30,7 @@
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
 	</dependencies>
-
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -41,12 +41,13 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>example.chatbot.server.Application</mainClass>
+							<mainClass>example.chatbot.cliclient.Application</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
+	
+	
 </project>
