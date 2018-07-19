@@ -1,0 +1,6 @@
+TODO list:
+* add logger
+* finish and test cli-client
+* add web based client
+* test with external tomcat/nginx
+* dockerize components
