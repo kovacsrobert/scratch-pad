@@ -10,8 +10,8 @@ public class Receiver {
 
 	private static final Logger logger = LoggerFactory.getLogger(Receiver.class);
 
-	@JmsListener(destination = "mailbox")
+	@JmsListener(destination = "mailbox", containerFactory = "myFactory")
 	public void receiveMessage(Message message) {
-		logger.info("Receiver got message: {}" + message.getText());
+		logger.info("Receiver got message: {}", message.getText());
 	}
 }
