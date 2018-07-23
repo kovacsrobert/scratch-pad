@@ -1,6 +1,6 @@
 package examples.chatbot.cliclient;
 
-public class Message {
+public class ClientMessage {
 
 	private String text;
 
@@ -8,8 +8,8 @@ public class Message {
 		return text;
 	}
 
-	public static Message message(String text) {
-		Message message = new Message();
+	public static ClientMessage clientMessage(String text) {
+		ClientMessage message = new ClientMessage();
 		message.text = text;
 		return message;
 	}

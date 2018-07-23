@@ -1,6 +1,6 @@
 package examples.chatbot.server;
 
-public class Message {
+public class ServerMessage {
 
 	private String text;
 
@@ -12,8 +12,8 @@ public class Message {
 		this.text = text;
 	}
 	
-	public static Message message(String text) {
-		Message message = new Message();
+	public static ServerMessage serverMessage(String text) {
+		ServerMessage message = new ServerMessage();
 		message.text = text;
 		return message;
 	}

@@ -11,7 +11,7 @@ public class Receiver {
 	private static final Logger logger = LoggerFactory.getLogger(Receiver.class);
 
 	@JmsListener(destination = "mailbox", containerFactory = "myFactory")
-	public void receiveMessage(Message message) {
+	public void receiveMessage(ServerMessage message) {
 		logger.info("Receiver got message: {}", message.getText());
 	}
 }
