@@ -21,6 +21,8 @@ class HashBreakerCallable implements Callable<String> {
     private final int length;
     private final String secretHash;
 
+    private static volatile boolean solved = false;
+
     HashBreakerCallable(String startingPrefix, int length, String secretHash) {
         this.startingPrefix = startingPrefix;
         this.length = length;
@@ -30,14 +32,14 @@ class HashBreakerCallable implements Callable<String> {
     @Override
     public String call() {
         Stopwatch timer = Stopwatch.createStarted();
-        LOGGER.info("Timer started");
+        LOGGER.debug("Timer started");
         try {
             recursiveSearch(startingPrefix);
         } catch (RecursionEndedException e) {
             return e.result;
         } finally {
             timer.stop();
-            LOGGER.info("Timer stopped at {}", timer);
+            LOGGER.debug("Timer stopped at {}", timer);
         }
         return "";
     }
@@ -45,6 +47,7 @@ class HashBreakerCallable implements Callable<String> {
     private void recursiveSearch(String current) throws RecursionEndedException {
         String hash = hash(current);
         if (hash.equals(secretHash)) {
+            solved = true;
             LOGGER.info("Found secret: {}", current);
             throw new RecursionEndedException(current);
         }
@@ -53,7 +56,9 @@ class HashBreakerCallable implements Callable<String> {
             return;
         }
         for (int i = START_CHAR; i <= END_CHAR; i++) {
-            recursiveSearch(current + (char) i);
+            if (!solved) {
+                recursiveSearch(current + (char) i);
+            }
         }
     }
 

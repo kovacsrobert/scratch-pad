@@ -2,5 +2,8 @@
 + add logging
 + add timing
 + run with multiple threads through all possible combinations
-- stop threads when secret is found
++ stop threads when secret is found
+    sync vs volatile vs AtomicBoolean
 - parameters into properties file
+- use Fork/Join framework
+- use Spring framework
