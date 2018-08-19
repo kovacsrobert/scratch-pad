@@ -17,10 +17,12 @@ class HashBreakerCallable implements Callable<String> {
     private static final char START_CHAR = 'a';
     private static final char END_CHAR = 'z';
 
+    private final String startingPrefix;
     private final int length;
     private final String secretHash;
 
-    HashBreakerCallable(int length, String secretHash) {
+    HashBreakerCallable(String startingPrefix, int length, String secretHash) {
+        this.startingPrefix = startingPrefix;
         this.length = length;
         this.secretHash = secretHash;
     }
@@ -28,14 +30,14 @@ class HashBreakerCallable implements Callable<String> {
     @Override
     public String call() {
         Stopwatch timer = Stopwatch.createStarted();
-        LOGGER.debug("Timer started");
+        LOGGER.info("Timer started");
         try {
-            recursiveSearch("");
+            recursiveSearch(startingPrefix);
         } catch (RecursionEndedException e) {
             return e.result;
         } finally {
             timer.stop();
-            LOGGER.debug("Timer stopped at {}", timer);
+            LOGGER.info("Timer stopped at {}", timer);
         }
         return "";
     }
@@ -43,11 +45,11 @@ class HashBreakerCallable implements Callable<String> {
     private void recursiveSearch(String current) throws RecursionEndedException {
         String hash = hash(current);
         if (hash.equals(secretHash)) {
-            LOGGER.debug("Found secret: {}", current);
+            LOGGER.info("Found secret: {}", current);
             throw new RecursionEndedException(current);
         }
         if (current.length() == length) {
-            LOGGER.debug("Secret was not found: {}", current);
+            LOGGER.trace("Secret was not found: {}", current);
             return;
         }
         for (int i = START_CHAR; i <= END_CHAR; i++) {
