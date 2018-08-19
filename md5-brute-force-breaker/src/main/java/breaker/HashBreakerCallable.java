@@ -1,13 +1,17 @@
 package breaker;
 
 import com.google.common.hash.Hasher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Callable;
 
 import static com.google.common.hash.Hashing.md5;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class HashBreakerCallable implements Callable<String> {
+class HashBreakerCallable implements Callable<String> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HashBreakerCallable.class);
 
     private static final char START_CHAR = 'a';
     private static final char END_CHAR = 'z';
@@ -15,7 +19,7 @@ public class HashBreakerCallable implements Callable<String> {
     private final int length;
     private final String secretHash;
 
-    public HashBreakerCallable(int length, String secretHash) {
+    HashBreakerCallable(int length, String secretHash) {
         this.length = length;
         this.secretHash = secretHash;
     }
@@ -25,7 +29,7 @@ public class HashBreakerCallable implements Callable<String> {
         try {
             recursiveSearch("");
         } catch (RecursionEndedException e) {
-            return e.getResult();
+            return e.result;
         }
         return "";
     }
@@ -33,11 +37,11 @@ public class HashBreakerCallable implements Callable<String> {
     private void recursiveSearch(String current) throws RecursionEndedException {
         String hash = hash(current);
         if (hash.equals(secretHash)) {
-            // System.out.println("Found secret: " + current);
+            LOGGER.debug("Found secret: {}", current);
             throw new RecursionEndedException(current);
         }
         if (current.length() == length) {
-            // System.out.println("Secret was not found :" + current);
+            LOGGER.debug("Secret was not found: {}", current);
             return;
         }
         for (int i = START_CHAR; i <= END_CHAR; i++) {
@@ -52,15 +56,9 @@ public class HashBreakerCallable implements Callable<String> {
     }
 
     private static class RecursionEndedException extends Exception {
-
         private final String result;
-
         private RecursionEndedException(String result) {
             this.result = result;
-        }
-
-        public String getResult() {
-            return result;
         }
     }
 }
