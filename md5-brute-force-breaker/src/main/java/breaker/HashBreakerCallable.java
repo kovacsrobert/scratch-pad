@@ -1,5 +1,6 @@
 package breaker;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.hash.Hasher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,11 +26,16 @@ class HashBreakerCallable implements Callable<String> {
     }
 
     @Override
-    public String call() throws Exception {
+    public String call() {
+        Stopwatch timer = Stopwatch.createStarted();
+        LOGGER.debug("Timer started");
         try {
             recursiveSearch("");
         } catch (RecursionEndedException e) {
             return e.result;
+        } finally {
+            timer.stop();
+            LOGGER.debug("Timer stopped at {}", timer);
         }
         return "";
     }
