@@ -4,6 +4,7 @@
 + run with multiple threads through all possible combinations
 + stop threads when secret is found
     sync vs volatile vs AtomicBoolean
-- parameters into properties file
++ parameters into arguments
+    4fd0101ea3d0f5abbe296ef97f47afec 6 26
+    73c18c59a39b18382081ec00bb456d43 2 10
 - use Fork/Join framework
-- use Spring framework
