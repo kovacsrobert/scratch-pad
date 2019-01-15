@@ -1,3 +1,5 @@
 Notes:
 - interpolation binding syntax
-- 
+- lifecycle hook
+- pipes
+- Component vs NgModule
