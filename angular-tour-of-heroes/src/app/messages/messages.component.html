@@ -1,0 +1,5 @@
+<p>Hero messages</p>
+<div>
+	<button (click)="messageService.clear()">clear</button>
+	<li *ngFor="let message of messageService.messages">{{message}}</li>
+</div>
