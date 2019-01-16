@@ -12,6 +12,7 @@ import { MessageService } from './message.service';
 export class HeroService {
 
   private heroesUrl: string = 'api/heroes';
+  private httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
 
   constructor(
     private http: HttpClient, 
@@ -37,12 +38,28 @@ export class HeroService {
   }
 
   updateHero(hero: Hero): Observable<any> {
-    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-     return this.http.put(this.heroesUrl, hero, httpOptions)
-       .pipe(
-         tap(_ => this.log(`updated hero id=${hero.id}`)),
-         catchError(this.handleError<any>('updateHero'))
-       );
+    return this.http.put(this.heroesUrl, hero, this.httpOptions)
+      .pipe(
+        tap(_ => this.log(`updated hero id=${hero.id}`)),
+        catchError(this.handleError<any>('updateHero'))
+      );
+  }
+
+  addHero(hero: Hero): Observable<Hero> {
+    return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions)
+      .pipe(
+        tap((hero: Hero) => this.log(`added hero with id=${hero.id}`)),
+        catchError(this.handleError<Hero>('addHero'))
+      );
+  }
+
+  deleteHero(hero: Hero): Observable<any> {
+      const url = `${this.heroesUrl}/${hero.id}`;
+      return this.http.delete<Hero>(url, this.httpOptions)
+        .pipe(
+          tap(_ => this.log(`deleted hero id=${hero.id}`)),
+          catchError(this.handleError<Hero>('deleteHero'))
+        );
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
