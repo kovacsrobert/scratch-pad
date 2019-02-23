@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -12,9 +11,6 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static java.nio.file.Files.exists;
-import static java.nio.file.Files.isDirectory;
-import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.joining;
 
 public class LogFileSystem {
@@ -35,7 +31,7 @@ public class LogFileSystem {
 					.forEach(path -> {
 						try {
 							result.put(path.toString(), Files.lines(path)
-									.collect(joining(",")));
+									.collect(joining(", ")));
 						} catch (IOException e) {
 							logger.error("cannot read file", e);
 						}
