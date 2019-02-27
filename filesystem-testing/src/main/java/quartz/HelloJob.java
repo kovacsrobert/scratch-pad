@@ -1,7 +1,9 @@
 package quartz;
 
+import java.util.Date;
 import java.util.Properties;
 
+import org.quartz.Calendar;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobDetail;
@@ -13,6 +15,7 @@ import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.SimpleTrigger;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.impl.calendar.DailyCalendar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,6 +73,9 @@ public class HelloJob implements Job {
 		Scheduler scheduler = schedulerFactory.getScheduler();
 		scheduler.start();
 
+		Calendar fullBlockCalendar =  new DailyCalendar(new Date().getTime(), new Date().getTime() + 1_000_000L);
+		scheduler.addCalendar("fullBlockCalendar", fullBlockCalendar, false, false);
+
 		JobDetail mikeJobDetail = newJob(HelloJob.class)
 				.withIdentity("mike", HELLO_GROUP)
 				.usingJobData(GREETINGS_COUNTER, 0)
@@ -83,6 +89,7 @@ public class HelloJob implements Job {
 
 		SimpleTrigger mikeTrigger = newTrigger()
 				.withIdentity("mike", HELLO_GROUP)
+				.modifiedByCalendar("fullBlockCalendar")
 				.withSchedule(simpleSchedule()
 						.withIntervalInSeconds(1)
 						.repeatForever())
