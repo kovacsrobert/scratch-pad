@@ -1,5 +1,7 @@
 package quartz;
 
+import java.util.Properties;
+
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobDetail;
@@ -17,6 +19,8 @@ import org.slf4j.LoggerFactory;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
+import static org.quartz.impl.StdSchedulerFactory.PROP_THREAD_POOL_CLASS;
+import static org.quartz.impl.StdSchedulerFactory.PROP_THREAD_POOL_PREFIX;
 
 @DisallowConcurrentExecution
 @PersistJobDataAfterExecution
@@ -57,7 +61,12 @@ public class HelloJob implements Job {
 
 	public static void main(String[] args) throws SchedulerException {
 
-		SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+		Properties properties = new Properties();
+
+		properties.put(PROP_THREAD_POOL_CLASS, "org.quartz.simpl.SimpleThreadPool");
+		properties.put(PROP_THREAD_POOL_PREFIX + ".threadCount", "1");
+
+		SchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
 		Scheduler scheduler = schedulerFactory.getScheduler();
 		scheduler.start();
 
