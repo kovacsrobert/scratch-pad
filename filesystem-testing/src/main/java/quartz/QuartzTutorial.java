@@ -1,4 +1,4 @@
-package filesystem;
+package quartz;
 
 import org.quartz.Job;
 import org.quartz.JobDetail;
