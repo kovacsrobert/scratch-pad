@@ -9,11 +9,15 @@ import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.JobListener;
+import org.quartz.ListenerManager;
 import org.quartz.PersistJobDataAfterExecution;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.SimpleTrigger;
+import org.quartz.Trigger;
+import org.quartz.TriggerListener;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.calendar.DailyCalendar;
 import org.slf4j.Logger;
@@ -101,7 +105,69 @@ public class HelloJob implements Job {
 						.repeatForever())
 				.build();
 
+		ListenerManager listenerManager = scheduler.getListenerManager();
+		listenerManager.addJobListener(new HelloJobListener());
+		listenerManager.addTriggerListener(new HelloTriggerListener());
+
 		scheduler.scheduleJob(mikeJobDetail, mikeTrigger);
 		scheduler.scheduleJob(tobyJobDetail, tobyTrigger);
+	}
+
+	public static class HelloTriggerListener implements TriggerListener {
+
+		private static final Logger logger = LoggerFactory.getLogger(HelloTriggerListener.class);
+
+		@Override
+		public String getName() {
+			logger.info("HelloTriggerListener.getName");
+			return "HelloTriggerListener";
+		}
+
+		@Override
+		public void triggerFired(Trigger trigger, JobExecutionContext context) {
+			logger.info("HelloTriggerListener.triggerFired");
+		}
+
+		@Override
+		public boolean vetoJobExecution(Trigger trigger, JobExecutionContext context) {
+			logger.info("HelloTriggerListener.vetoJobExecution");
+			return false;
+		}
+
+		@Override
+		public void triggerMisfired(Trigger trigger) {
+			logger.info("HelloTriggerListener.triggerMisfired");
+		}
+
+		@Override
+		public void triggerComplete(Trigger trigger, JobExecutionContext context, Trigger.CompletedExecutionInstruction triggerInstructionCode) {
+			logger.info("HelloTriggerListener.triggerComplete");
+		}
+	}
+
+	public static class HelloJobListener implements JobListener {
+
+		private static final Logger logger = LoggerFactory.getLogger(HelloJobListener.class);
+
+		@Override
+		public String getName() {
+			logger.info("HelloJobListener.getName");
+			return "HelloJobListener";
+		}
+
+		@Override
+		public void jobToBeExecuted(JobExecutionContext context) {
+			logger.info("HelloJobListener.jobToBeExecuted");
+		}
+
+		@Override
+		public void jobExecutionVetoed(JobExecutionContext context) {
+			logger.info("HelloJobListener.jobExecutionVetoed");
+		}
+
+		@Override
+		public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
+			logger.info("HelloJobListener.jobWasExecuted");
+		}
 	}
 }
