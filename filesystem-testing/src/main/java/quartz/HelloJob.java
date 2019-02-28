@@ -9,14 +9,17 @@ import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.JobKey;
 import org.quartz.JobListener;
 import org.quartz.ListenerManager;
 import org.quartz.PersistJobDataAfterExecution;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
+import org.quartz.SchedulerListener;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
+import org.quartz.TriggerKey;
 import org.quartz.TriggerListener;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.calendar.DailyCalendar;
@@ -75,7 +78,11 @@ public class HelloJob implements Job {
 
 		SchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
 		Scheduler scheduler = schedulerFactory.getScheduler();
-		scheduler.start();
+
+		ListenerManager listenerManager = scheduler.getListenerManager();
+		listenerManager.addJobListener(new HelloJobListener());
+		listenerManager.addTriggerListener(new HelloTriggerListener());
+		listenerManager.addSchedulerListener(new HelloSchedulerListener());
 
 		Calendar fullBlockCalendar =  new DailyCalendar(new Date().getTime(), new Date().getTime() + 1_000_000L);
 		scheduler.addCalendar("fullBlockCalendar", fullBlockCalendar, false, false);
@@ -105,12 +112,10 @@ public class HelloJob implements Job {
 						.repeatForever())
 				.build();
 
-		ListenerManager listenerManager = scheduler.getListenerManager();
-		listenerManager.addJobListener(new HelloJobListener());
-		listenerManager.addTriggerListener(new HelloTriggerListener());
-
 		scheduler.scheduleJob(mikeJobDetail, mikeTrigger);
 		scheduler.scheduleJob(tobyJobDetail, tobyTrigger);
+
+		scheduler.start();
 	}
 
 	public static class HelloTriggerListener implements TriggerListener {
@@ -168,6 +173,111 @@ public class HelloJob implements Job {
 		@Override
 		public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
 			logger.info("HelloJobListener.jobWasExecuted");
+		}
+	}
+
+	public static class HelloSchedulerListener implements SchedulerListener {
+
+		private static final Logger logger = LoggerFactory.getLogger(HelloSchedulerListener.class);
+
+		@Override
+		public void jobScheduled(Trigger trigger) {
+			logger.info("HelloSchedulerListener.jobScheduled");
+		}
+
+		@Override
+		public void jobUnscheduled(TriggerKey triggerKey) {
+			logger.info("HelloSchedulerListener.jobUnscheduled");
+		}
+
+		@Override
+		public void triggerFinalized(Trigger trigger) {
+			logger.info("HelloSchedulerListener.triggerFinalized");
+		}
+
+		@Override
+		public void triggerPaused(TriggerKey triggerKey) {
+			logger.info("HelloSchedulerListener.triggerPaused");
+		}
+
+		@Override
+		public void triggersPaused(String triggerGroup) {
+			logger.info("HelloSchedulerListener.triggersPaused");
+		}
+
+		@Override
+		public void triggerResumed(TriggerKey triggerKey) {
+			logger.info("HelloSchedulerListener.triggerResumed");
+		}
+
+		@Override
+		public void triggersResumed(String triggerGroup) {
+			logger.info("HelloSchedulerListener.triggersResumed");
+		}
+
+		@Override
+		public void jobAdded(JobDetail jobDetail) {
+			logger.info("HelloSchedulerListener.jobAdded");
+		}
+
+		@Override
+		public void jobDeleted(JobKey jobKey) {
+			logger.info("HelloSchedulerListener.jobDeleted");
+		}
+
+		@Override
+		public void jobPaused(JobKey jobKey) {
+			logger.info("HelloSchedulerListener.jobPaused");
+		}
+
+		@Override
+		public void jobsPaused(String jobGroup) {
+			logger.info("HelloSchedulerListener.jobsPaused");
+		}
+
+		@Override
+		public void jobResumed(JobKey jobKey) {
+			logger.info("HelloSchedulerListener.jobResumed");
+		}
+
+		@Override
+		public void jobsResumed(String jobGroup) {
+			logger.info("HelloSchedulerListener.jobsResumed");
+		}
+
+		@Override
+		public void schedulerError(String msg, SchedulerException cause) {
+			logger.info("HelloSchedulerListener.schedulerError");
+		}
+
+		@Override
+		public void schedulerInStandbyMode() {
+			logger.info("HelloSchedulerListener.schedulerInStandbyMode");
+		}
+
+		@Override
+		public void schedulerStarted() {
+			logger.info("HelloSchedulerListener.schedulerStarted");
+		}
+
+		@Override
+		public void schedulerStarting() {
+			logger.info("HelloSchedulerListener.schedulerStarting");
+		}
+
+		@Override
+		public void schedulerShutdown() {
+			logger.info("HelloSchedulerListener.schedulerShutdown");
+		}
+
+		@Override
+		public void schedulerShuttingdown() {
+			logger.info("HelloSchedulerListener.schedulerShuttingdown");
+		}
+
+		@Override
+		public void schedulingDataCleared() {
+			logger.info("HelloSchedulerListener.schedulingDataCleared");
 		}
 	}
 }
