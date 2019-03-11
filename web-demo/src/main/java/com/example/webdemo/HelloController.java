@@ -9,9 +9,11 @@ public class HelloController {
 
     @Autowired
     private DemoProperties demoProperties;
+    @Autowired
+    private MyPrototype myPrototype;
 
     @GetMapping("/hello")
     public String hello() {
-        return "Hello, Frank!";
+        return "Hello, Frank! For the " + myPrototype.getIndex() + " times.";
     }
 }
