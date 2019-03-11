@@ -10,7 +10,7 @@ public class HelloController {
     @Autowired
     private DemoProperties demoProperties;
     @Autowired
-    private MyPrototype myPrototype;
+    private IMyPrototype myPrototype;
 
     @GetMapping("/hello")
     public String hello() {

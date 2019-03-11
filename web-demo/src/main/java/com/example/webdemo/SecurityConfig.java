@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
-import static org.springframework.context.annotation.ScopedProxyMode.TARGET_CLASS;
+import static org.springframework.context.annotation.ScopedProxyMode.INTERFACES;
 
 @Configuration
 @EnableConfigurationProperties({DemoProperties.class})
@@ -53,8 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    @Scope(value = SCOPE_PROTOTYPE, proxyMode = TARGET_CLASS)
-    public MyPrototype myPrototype() {
+    @Scope(value = SCOPE_PROTOTYPE, proxyMode = INTERFACES)
+    public IMyPrototype myPrototype() {
         return new MyPrototype();
     }
 }
