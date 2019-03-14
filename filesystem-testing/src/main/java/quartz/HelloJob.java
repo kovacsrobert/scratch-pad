@@ -6,12 +6,12 @@ import java.util.Properties;
 import org.quartz.Calendar;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
+import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobKey;
 import org.quartz.JobListener;
-import org.quartz.ListenerManager;
 import org.quartz.PersistJobDataAfterExecution;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -36,248 +36,246 @@ import static org.quartz.impl.StdSchedulerFactory.PROP_THREAD_POOL_PREFIX;
 @PersistJobDataAfterExecution
 public class HelloJob implements Job {
 
-	private static final Logger logger = LoggerFactory.getLogger(HelloJob.class);
+    private static final Logger logger = LoggerFactory.getLogger(HelloJob.class);
 
-	private static final String HELLO_GROUP = "hello-group";
-	private static final String GREETINGS_COUNTER = "greetingsCounter";
-	private static final String GUEST_NAME = "guestName";
+    private static final String HELLO_GROUP = "hello-group";
 
-	private int greetingsCounter;
-	private String guestName;
+    private HelloJobContext jobContext;
 
-	@Override
-	public void execute(JobExecutionContext context) throws JobExecutionException {
-		//context.getMergedJobDataMap().put(GREETINGS_COUNTER, ++greetingsCounter);
-		stopExecution(2000L);
-		context.getJobDetail().getJobDataMap().put(GREETINGS_COUNTER, ++greetingsCounter);
-		logger.info("Hello, " + guestName + " for the " + greetingsCounter + ". times. Run-time: " + context.getFireTime());
-	}
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        //context.getMergedJobDataMap().put(GREETINGS_COUNTER, ++greetingsCounter);
+        stopExecution(2000L);
+        jobContext.increaseCounter();
+        //context.getJobDetail().getJobDataMap().put(GREETINGS_COUNTER, ++greetingsCounter);
+        logger.info("Hello, " + jobContext.getGuestName() + " for the " + jobContext.getGreetingsCounter() + ". times. Run-time: " + context.getFireTime());
+    }
 
-	private void stopExecution(long millis) throws JobExecutionException {
-		try {
-			Thread.sleep(millis);
-		} catch (InterruptedException e) {
-			throw new JobExecutionException(e);
-		}
-	}
+    private void stopExecution(long millis) throws JobExecutionException {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            throw new JobExecutionException(e);
+        }
+    }
 
-	public void setGuestName(String guestName) {
-		this.guestName = guestName;
-	}
+    public void setJobContext(HelloJobContext jobContext) {
+        this.jobContext = jobContext;
+    }
 
-	public void setGreetingsCounter(int greetingsCounter) {
-		this.greetingsCounter = greetingsCounter;
-	}
+    public static void main(String[] args) throws SchedulerException {
 
-	public static void main(String[] args) throws SchedulerException {
+        Properties properties = new Properties();
 
-		Properties properties = new Properties();
+        properties.put(PROP_THREAD_POOL_CLASS, "org.quartz.simpl.SimpleThreadPool");
+        properties.put(PROP_THREAD_POOL_PREFIX + ".threadCount", "1");
 
-		properties.put(PROP_THREAD_POOL_CLASS, "org.quartz.simpl.SimpleThreadPool");
-		properties.put(PROP_THREAD_POOL_PREFIX + ".threadCount", "1");
+        SchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
+        Scheduler scheduler = schedulerFactory.getScheduler();
 
-		SchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
-		Scheduler scheduler = schedulerFactory.getScheduler();
+//        ListenerManager listenerManager = scheduler.getListenerManager();
+//        listenerManager.addJobListener(new HelloJobListener());
+//        listenerManager.addTriggerListener(new HelloTriggerListener());
+//        listenerManager.addSchedulerListener(new HelloSchedulerListener());
 
-		ListenerManager listenerManager = scheduler.getListenerManager();
-		listenerManager.addJobListener(new HelloJobListener());
-		listenerManager.addTriggerListener(new HelloTriggerListener());
-		listenerManager.addSchedulerListener(new HelloSchedulerListener());
+        Calendar fullBlockCalendar = new DailyCalendar(new Date().getTime(), new Date().getTime() + 1_000_000L);
+        scheduler.addCalendar("fullBlockCalendar", fullBlockCalendar, false, false);
 
-		Calendar fullBlockCalendar =  new DailyCalendar(new Date().getTime(), new Date().getTime() + 1_000_000L);
-		scheduler.addCalendar("fullBlockCalendar", fullBlockCalendar, false, false);
+        JobDataMap mikeJobDataMap = new JobDataMap();
+        mikeJobDataMap.put("jobContext", new HelloJobContext(0, "Mike"));
 
-		JobDetail mikeJobDetail = newJob(HelloJob.class)
-				.withIdentity("mike", HELLO_GROUP)
-				.usingJobData(GREETINGS_COUNTER, 0)
-				.usingJobData(GUEST_NAME, "Mike")
-				.build();
-		JobDetail tobyJobDetail = newJob(HelloJob.class)
-				.withIdentity("toby", HELLO_GROUP)
-				.usingJobData(GREETINGS_COUNTER, 0)
-				.usingJobData(GUEST_NAME, "Toby")
-				.build();
+        JobDataMap tobyJobDataMap = new JobDataMap();
+        tobyJobDataMap.put("jobContext", new HelloJobContext(0, "Toby"));
 
-		SimpleTrigger mikeTrigger = newTrigger()
-				.withIdentity("mike", HELLO_GROUP)
-				.modifiedByCalendar("fullBlockCalendar")
-				.withSchedule(simpleSchedule()
-						.withIntervalInSeconds(1)
-						.repeatForever())
-				.build();
-		SimpleTrigger tobyTrigger = newTrigger()
-				.withIdentity("toby", HELLO_GROUP)
-				.withSchedule(simpleSchedule()
-						.withIntervalInSeconds(1)
-						.repeatForever())
-				.build();
+        JobDetail mikeJobDetail = newJob(HelloJob.class)
+                .withIdentity("mike", HELLO_GROUP)
+                .setJobData(mikeJobDataMap)
+                .build();
+        JobDetail tobyJobDetail = newJob(HelloJob.class)
+                .withIdentity("toby", HELLO_GROUP)
+                .setJobData(tobyJobDataMap)
+                .build();
 
-		scheduler.scheduleJob(mikeJobDetail, mikeTrigger);
-		scheduler.scheduleJob(tobyJobDetail, tobyTrigger);
+        SimpleTrigger mikeTrigger = newTrigger()
+                .withIdentity("mike", HELLO_GROUP)
+                .modifiedByCalendar("fullBlockCalendar")
+                .withSchedule(simpleSchedule()
+                        .withIntervalInSeconds(1)
+                        .repeatForever())
+                .build();
+        SimpleTrigger tobyTrigger = newTrigger()
+                .withIdentity("toby", HELLO_GROUP)
+                .withSchedule(simpleSchedule()
+                        .withIntervalInSeconds(1)
+                        .repeatForever())
+                .build();
 
-		scheduler.start();
-	}
+        scheduler.scheduleJob(mikeJobDetail, mikeTrigger);
+        scheduler.scheduleJob(tobyJobDetail, tobyTrigger);
 
-	public static class HelloTriggerListener implements TriggerListener {
+        scheduler.start();
+    }
 
-		private static final Logger logger = LoggerFactory.getLogger(HelloTriggerListener.class);
+    public static class HelloTriggerListener implements TriggerListener {
 
-		@Override
-		public String getName() {
-			logger.info("HelloTriggerListener.getName");
-			return "HelloTriggerListener";
-		}
+        private static final Logger logger = LoggerFactory.getLogger(HelloTriggerListener.class);
 
-		@Override
-		public void triggerFired(Trigger trigger, JobExecutionContext context) {
-			logger.info("HelloTriggerListener.triggerFired");
-		}
+        @Override
+        public String getName() {
+            logger.info("HelloTriggerListener.getName");
+            return "HelloTriggerListener";
+        }
 
-		@Override
-		public boolean vetoJobExecution(Trigger trigger, JobExecutionContext context) {
-			logger.info("HelloTriggerListener.vetoJobExecution");
-			return false;
-		}
+        @Override
+        public void triggerFired(Trigger trigger, JobExecutionContext context) {
+            logger.info("HelloTriggerListener.triggerFired");
+        }
 
-		@Override
-		public void triggerMisfired(Trigger trigger) {
-			logger.info("HelloTriggerListener.triggerMisfired");
-		}
+        @Override
+        public boolean vetoJobExecution(Trigger trigger, JobExecutionContext context) {
+            logger.info("HelloTriggerListener.vetoJobExecution");
+            return false;
+        }
 
-		@Override
-		public void triggerComplete(Trigger trigger, JobExecutionContext context, Trigger.CompletedExecutionInstruction triggerInstructionCode) {
-			logger.info("HelloTriggerListener.triggerComplete");
-		}
-	}
+        @Override
+        public void triggerMisfired(Trigger trigger) {
+            logger.info("HelloTriggerListener.triggerMisfired");
+        }
 
-	public static class HelloJobListener implements JobListener {
+        @Override
+        public void triggerComplete(Trigger trigger, JobExecutionContext context, Trigger.CompletedExecutionInstruction triggerInstructionCode) {
+            logger.info("HelloTriggerListener.triggerComplete");
+        }
+    }
 
-		private static final Logger logger = LoggerFactory.getLogger(HelloJobListener.class);
+    public static class HelloJobListener implements JobListener {
 
-		@Override
-		public String getName() {
-			logger.info("HelloJobListener.getName");
-			return "HelloJobListener";
-		}
+        private static final Logger logger = LoggerFactory.getLogger(HelloJobListener.class);
 
-		@Override
-		public void jobToBeExecuted(JobExecutionContext context) {
-			logger.info("HelloJobListener.jobToBeExecuted");
-		}
+        @Override
+        public String getName() {
+            logger.info("HelloJobListener.getName");
+            return "HelloJobListener";
+        }
 
-		@Override
-		public void jobExecutionVetoed(JobExecutionContext context) {
-			logger.info("HelloJobListener.jobExecutionVetoed");
-		}
+        @Override
+        public void jobToBeExecuted(JobExecutionContext context) {
+            logger.info("HelloJobListener.jobToBeExecuted");
+        }
 
-		@Override
-		public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
-			logger.info("HelloJobListener.jobWasExecuted");
-		}
-	}
+        @Override
+        public void jobExecutionVetoed(JobExecutionContext context) {
+            logger.info("HelloJobListener.jobExecutionVetoed");
+        }
 
-	public static class HelloSchedulerListener implements SchedulerListener {
+        @Override
+        public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
+            logger.info("HelloJobListener.jobWasExecuted");
+        }
+    }
 
-		private static final Logger logger = LoggerFactory.getLogger(HelloSchedulerListener.class);
+    public static class HelloSchedulerListener implements SchedulerListener {
 
-		@Override
-		public void jobScheduled(Trigger trigger) {
-			logger.info("HelloSchedulerListener.jobScheduled");
-		}
+        private static final Logger logger = LoggerFactory.getLogger(HelloSchedulerListener.class);
 
-		@Override
-		public void jobUnscheduled(TriggerKey triggerKey) {
-			logger.info("HelloSchedulerListener.jobUnscheduled");
-		}
+        @Override
+        public void jobScheduled(Trigger trigger) {
+            logger.info("HelloSchedulerListener.jobScheduled");
+        }
 
-		@Override
-		public void triggerFinalized(Trigger trigger) {
-			logger.info("HelloSchedulerListener.triggerFinalized");
-		}
+        @Override
+        public void jobUnscheduled(TriggerKey triggerKey) {
+            logger.info("HelloSchedulerListener.jobUnscheduled");
+        }
 
-		@Override
-		public void triggerPaused(TriggerKey triggerKey) {
-			logger.info("HelloSchedulerListener.triggerPaused");
-		}
+        @Override
+        public void triggerFinalized(Trigger trigger) {
+            logger.info("HelloSchedulerListener.triggerFinalized");
+        }
 
-		@Override
-		public void triggersPaused(String triggerGroup) {
-			logger.info("HelloSchedulerListener.triggersPaused");
-		}
+        @Override
+        public void triggerPaused(TriggerKey triggerKey) {
+            logger.info("HelloSchedulerListener.triggerPaused");
+        }
 
-		@Override
-		public void triggerResumed(TriggerKey triggerKey) {
-			logger.info("HelloSchedulerListener.triggerResumed");
-		}
+        @Override
+        public void triggersPaused(String triggerGroup) {
+            logger.info("HelloSchedulerListener.triggersPaused");
+        }
 
-		@Override
-		public void triggersResumed(String triggerGroup) {
-			logger.info("HelloSchedulerListener.triggersResumed");
-		}
+        @Override
+        public void triggerResumed(TriggerKey triggerKey) {
+            logger.info("HelloSchedulerListener.triggerResumed");
+        }
 
-		@Override
-		public void jobAdded(JobDetail jobDetail) {
-			logger.info("HelloSchedulerListener.jobAdded");
-		}
+        @Override
+        public void triggersResumed(String triggerGroup) {
+            logger.info("HelloSchedulerListener.triggersResumed");
+        }
 
-		@Override
-		public void jobDeleted(JobKey jobKey) {
-			logger.info("HelloSchedulerListener.jobDeleted");
-		}
+        @Override
+        public void jobAdded(JobDetail jobDetail) {
+            logger.info("HelloSchedulerListener.jobAdded");
+        }
 
-		@Override
-		public void jobPaused(JobKey jobKey) {
-			logger.info("HelloSchedulerListener.jobPaused");
-		}
+        @Override
+        public void jobDeleted(JobKey jobKey) {
+            logger.info("HelloSchedulerListener.jobDeleted");
+        }
 
-		@Override
-		public void jobsPaused(String jobGroup) {
-			logger.info("HelloSchedulerListener.jobsPaused");
-		}
+        @Override
+        public void jobPaused(JobKey jobKey) {
+            logger.info("HelloSchedulerListener.jobPaused");
+        }
 
-		@Override
-		public void jobResumed(JobKey jobKey) {
-			logger.info("HelloSchedulerListener.jobResumed");
-		}
+        @Override
+        public void jobsPaused(String jobGroup) {
+            logger.info("HelloSchedulerListener.jobsPaused");
+        }
 
-		@Override
-		public void jobsResumed(String jobGroup) {
-			logger.info("HelloSchedulerListener.jobsResumed");
-		}
+        @Override
+        public void jobResumed(JobKey jobKey) {
+            logger.info("HelloSchedulerListener.jobResumed");
+        }
 
-		@Override
-		public void schedulerError(String msg, SchedulerException cause) {
-			logger.info("HelloSchedulerListener.schedulerError");
-		}
+        @Override
+        public void jobsResumed(String jobGroup) {
+            logger.info("HelloSchedulerListener.jobsResumed");
+        }
 
-		@Override
-		public void schedulerInStandbyMode() {
-			logger.info("HelloSchedulerListener.schedulerInStandbyMode");
-		}
+        @Override
+        public void schedulerError(String msg, SchedulerException cause) {
+            logger.info("HelloSchedulerListener.schedulerError");
+        }
 
-		@Override
-		public void schedulerStarted() {
-			logger.info("HelloSchedulerListener.schedulerStarted");
-		}
+        @Override
+        public void schedulerInStandbyMode() {
+            logger.info("HelloSchedulerListener.schedulerInStandbyMode");
+        }
 
-		@Override
-		public void schedulerStarting() {
-			logger.info("HelloSchedulerListener.schedulerStarting");
-		}
+        @Override
+        public void schedulerStarted() {
+            logger.info("HelloSchedulerListener.schedulerStarted");
+        }
 
-		@Override
-		public void schedulerShutdown() {
-			logger.info("HelloSchedulerListener.schedulerShutdown");
-		}
+        @Override
+        public void schedulerStarting() {
+            logger.info("HelloSchedulerListener.schedulerStarting");
+        }
 
-		@Override
-		public void schedulerShuttingdown() {
-			logger.info("HelloSchedulerListener.schedulerShuttingdown");
-		}
+        @Override
+        public void schedulerShutdown() {
+            logger.info("HelloSchedulerListener.schedulerShutdown");
+        }
 
-		@Override
-		public void schedulingDataCleared() {
-			logger.info("HelloSchedulerListener.schedulingDataCleared");
-		}
-	}
+        @Override
+        public void schedulerShuttingdown() {
+            logger.info("HelloSchedulerListener.schedulerShuttingdown");
+        }
+
+        @Override
+        public void schedulingDataCleared() {
+            logger.info("HelloSchedulerListener.schedulingDataCleared");
+        }
+    }
 }
