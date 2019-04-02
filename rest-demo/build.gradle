@@ -1,20 +1,37 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url "http://repo.spring.io/plugins-release/" }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.5.RELEASE")
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:2.0.5.RELEASE')
+        classpath('com.palantir.gradle.docker:gradle-docker:0.20.1')
     }
 }
+
+group = 'demo.cluster'
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.palantir.docker'
+
+task unpack(type: Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+
+docker {
+    name "${project.group}/${bootJar.archiveName}"
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
+}
 
 bootJar {
     baseName = 'rest-demo'
-    version =  '0.1.0'
+    //version =  '0.1.0'
 }
 
 repositories {
