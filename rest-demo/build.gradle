@@ -24,14 +24,13 @@ task unpack(type: Copy) {
 }
 
 docker {
-    name "${project.group}/${bootJar.archiveName}"
+    name "${project.group}/${bootJar.baseName}"
     copySpec.from(tasks.unpack.outputs).into("dependency")
     buildArgs(['DEPENDENCY': "dependency"])
 }
 
 bootJar {
     baseName = 'rest-demo'
-    //version =  '0.1.0'
 }
 
 repositories {

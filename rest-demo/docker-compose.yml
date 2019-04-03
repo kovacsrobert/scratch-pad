@@ -1,0 +1,9 @@
+version: '3'
+services:
+  web:
+    container_name: rest-demo-1
+    build: .
+    volumes:
+      - ./:/tmp
+    ports:
+      - "8080:8080"
