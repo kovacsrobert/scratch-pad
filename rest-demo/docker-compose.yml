@@ -1,9 +1,16 @@
 version: '3'
 services:
-  web:
+  web-1:
     container_name: rest-demo-1
     build: .
     volumes:
       - ./:/tmp
     ports:
-      - "8080:8080"
+      - "9090:8080"
+  web-2:
+    container_name: rest-demo-2
+    build: .
+    volumes:
+      - ./:/tmp
+    ports:
+      - "9091:8080"
