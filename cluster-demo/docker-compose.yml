@@ -5,12 +5,20 @@ services:
     build: .
     volumes:
       - ./:/tmp
+      - log-dir:/tmp/cluster/logs/
     ports:
       - "9090:8080"
+    environment:
+      - INSTANCE_NAME=web-1
   web-2:
     container_name: rest-demo-2
     build: .
     volumes:
       - ./:/tmp
+      - log-dir:/tmp/cluster/logs/
     ports:
       - "9091:8080"
+    environment:
+      - INSTANCE_NAME=web-2
+volumes:
+  log-dir:

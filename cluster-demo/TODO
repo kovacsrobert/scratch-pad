@@ -1,8 +1,8 @@
 
 Backlog:
-- add logging file in docker volume
 - separate web and dao component
 - add ELK stack in docker-compose
+- add SpringCloud logging solution
 - add db to dao component
 - use terracotta for distributed caching
 - try docker swarm
@@ -15,3 +15,4 @@ Backlog:
 - try ChaosMonkey
 
 Done:
++ add logging file in docker volume
