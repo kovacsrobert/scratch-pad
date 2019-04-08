@@ -1,0 +1,17 @@
+
+Backlog:
+- add logging file in docker volume
+- separate web and dao component
+- add ELK stack in docker-compose
+- add db to dao component
+- use terracotta for distributed caching
+- try docker swarm
+- add testing/loading solution
+- add heartbeat solution
+- try solution in AWS
+- add load-balancing
+- add network in docker
+- add CI solution (Jenkins, Vagrant, Cloudfoundry)
+- try ChaosMonkey
+
+Done:
