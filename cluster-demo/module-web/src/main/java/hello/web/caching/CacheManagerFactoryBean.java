@@ -1,4 +1,4 @@
-package hello;
+package hello.web.caching;
 
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;

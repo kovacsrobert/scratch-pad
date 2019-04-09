@@ -1,6 +1,6 @@
 
 Backlog:
-- separate web and dao component
+- add parent project (gradle)
 - add ELK stack in docker-compose
 - add SpringCloud logging solution
 - add db to dao component
@@ -16,3 +16,4 @@ Backlog:
 
 Done:
 + add logging file in docker volume
++ separate web and dao component

@@ -1,4 +1,4 @@
-package hello;
+package hello.web.caching;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;

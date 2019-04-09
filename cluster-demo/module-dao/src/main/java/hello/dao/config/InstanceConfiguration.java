@@ -1,4 +1,6 @@
-package hello;
+package hello.dao.config;
+
+import static hello.dao.util.EnvironmentUtils.getConfiguration;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
@@ -10,7 +12,7 @@ public class InstanceConfiguration implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() {
-		instanceName = System.getenv("INSTANCE_NAME");
+		instanceName = getConfiguration("INSTANCE_NAME", "cluster-dao");
 	}
 
 	public String getInstanceName() {

@@ -1,24 +1,48 @@
 version: '3'
 services:
-  web-1:
-    container_name: rest-demo-1
-    build: .
+  cluster-web-1:
+    container_name: cluster-web-1
+    build: ./module-web
+    depends_on:
+      - cluster-dao
     volumes:
       - ./:/tmp
       - log-dir:/tmp/cluster/logs/
     ports:
       - "9090:8080"
     environment:
-      - INSTANCE_NAME=web-1
-  web-2:
-    container_name: rest-demo-2
-    build: .
+      - INSTANCE_NAME=cluster-web-1
+      - DAO_URL=http://cluster-dao:8090
+    networks:
+      - cluster-network
+  cluster-web-2:
+    container_name: cluster-web-2
+    build: ./module-web
+    depends_on:
+      - cluster-dao
     volumes:
       - ./:/tmp
       - log-dir:/tmp/cluster/logs/
     ports:
       - "9091:8080"
     environment:
-      - INSTANCE_NAME=web-2
+      - INSTANCE_NAME=cluster-web-2
+      - DAO_URL=http://cluster-dao:8090
+    networks:
+    - cluster-network
+  cluster-dao:
+    container_name: cluster-dao
+    build: ./module-dao
+    volumes:
+      - ./:/tmp
+      - log-dir:/tmp/cluster/logs/
+    ports:
+      - "9092:8090"
+    environment:
+      - INSTANCE_NAME=cluster-dao
+    networks:
+      - cluster-network
 volumes:
   log-dir:
+networks:
+  cluster-network:
