@@ -1,4 +1,4 @@
-package hello.dao.config;
+package hello.util;
 
 import java.io.IOException;
 
