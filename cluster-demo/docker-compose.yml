@@ -6,7 +6,7 @@ services:
     depends_on:
       - cluster-dao
     volumes:
-      - ./:/tmp
+      - /tmp:/tmp
       - log-dir:/tmp/cluster/logs/
     ports:
       - "9090:8080"
@@ -21,7 +21,7 @@ services:
     depends_on:
       - cluster-dao
     volumes:
-      - ./:/tmp
+      - /tmp:/tmp
       - log-dir:/tmp/cluster/logs/
     ports:
       - "9091:8080"
@@ -34,7 +34,7 @@ services:
     container_name: cluster-dao
     build: cluster-dao
     volumes:
-      - ./:/tmp
+      - /tmp:/tmp
       - log-dir:/tmp/cluster/logs/
     ports:
       - "9092:8090"

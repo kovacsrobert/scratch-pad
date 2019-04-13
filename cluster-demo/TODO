@@ -1,6 +1,6 @@
 
 Backlog:
-- add parent project (gradle)
+- add util module
 - add ELK stack in docker-compose
 - add SpringCloud logging solution
 - add db to dao component
@@ -17,3 +17,5 @@ Backlog:
 Done:
 + add logging file in docker volume
 + separate web and dao component
++ add parent project (gradle)
++ generate tmp files to /tmp, not into current dir
