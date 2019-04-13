@@ -1,0 +1,3 @@
+rootProject.name = 'cluster-demo'
+
+include 'cluster-dao', 'cluster-web'

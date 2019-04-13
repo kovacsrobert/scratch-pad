@@ -2,7 +2,7 @@ version: '3'
 services:
   cluster-web-1:
     container_name: cluster-web-1
-    build: ./module-web
+    build: cluster-web
     depends_on:
       - cluster-dao
     volumes:
@@ -17,7 +17,7 @@ services:
       - cluster-network
   cluster-web-2:
     container_name: cluster-web-2
-    build: ./module-web
+    build: cluster-web
     depends_on:
       - cluster-dao
     volumes:
@@ -32,7 +32,7 @@ services:
     - cluster-network
   cluster-dao:
     container_name: cluster-dao
-    build: ./module-dao
+    build: cluster-dao
     volumes:
       - ./:/tmp
       - log-dir:/tmp/cluster/logs/
