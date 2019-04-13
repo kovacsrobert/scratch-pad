@@ -1,0 +1,49 @@
+
+//Closure cl = { task -> println "I'm $task.project.name" }
+//task('hello').doLast(cl)
+//project(':bluewhale') {
+//    task('hello').doLast(cl)
+//}
+
+//allprojects {
+//    task hello {
+//        doLast { task ->
+////            println "I'm $task.project.name"
+//            println "I'm $project.name"
+//        }
+//    }
+//}
+
+allprojects {
+    task("hello") {
+        //printf("I'm %s\n", project.name)
+        doLast {
+            printf("I'm %s\n", project.name)
+        }
+        doFirst {
+            //printf("I'm %s\n", project.name)
+        }
+    }
+}
+
+subprojects {
+    hello {
+        //printf("- I depend on water\n")
+        doLast {
+            printf("- I depend on water\n")
+        }
+        doFirst {
+            //printf("- I depend on water\n")
+        }
+    }
+}
+
+project(":bluewhale").hello {
+    //printf("- I am the largest animal on Earth\n")
+    doLast {
+        printf("- I am the largest animal on Earth\n")
+    }
+    doFirst {
+        //printf("- I am the largest animal on Earth\n")
+    }
+}
