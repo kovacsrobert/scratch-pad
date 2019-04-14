@@ -5,3 +5,5 @@ heartbeat.config.monitors:
 output.elasticsearch:
   hosts:
     - cluster-elasticsearch:9200
+setup.kibana.host: 'http://cluster-kibana:5601'
+#setup.dashboards.enabled: true
