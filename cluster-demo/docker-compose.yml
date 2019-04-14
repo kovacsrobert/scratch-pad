@@ -2,6 +2,7 @@ version: '3'
 services:
   cluster-web-1:
     container_name: cluster-web-1
+    image: cluster-web-1
     build: cluster-web
     depends_on:
       - cluster-dao
@@ -17,6 +18,7 @@ services:
       - cluster-network
   cluster-web-2:
     container_name: cluster-web-2
+    image: cluster-web-2
     build: cluster-web
     depends_on:
       - cluster-dao
@@ -32,6 +34,7 @@ services:
     - cluster-network
   cluster-dao:
     container_name: cluster-dao
+    image: cluster-dao
     build: cluster-dao
     volumes:
       - /tmp:/tmp
@@ -40,6 +43,60 @@ services:
       - "9092:8090"
     environment:
       - INSTANCE_NAME=cluster-dao
+    networks:
+      - cluster-network
+  cluster-elasticsearch:
+    container_name: cluster-elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+    networks:
+      - cluster-network
+
+#  cluster-kibana:
+#    container_name: cluster-kibana
+#    image: docker.elastic.co/kibana/kibana:7.0.0
+#    depends_on:
+#      - cluster-elasticsearch
+#    ports:
+#      - "5601:5601"
+#    environment:
+#      - ELASTICSEARCH_HOSTS=http://cluster-elasticsearch:9200
+#    networks:
+#      - cluster-network
+
+#  logstash:
+#    container_name: logstash
+#    image: docker.elastic.co/logstash/logstash:7.0.0
+#    ports:
+#      - "5044:5044"
+#      - "9600:9600"
+#    networks:
+#      - cluster-network
+
+#  cluster-heartbeat:
+#    container_name: cluster-heartbeat
+#    image: cluster-heartbeat
+#    build: ./cluster-heartbeat
+#    depends_on:
+#      - cluster-elasticsearch
+#    networks:
+#      - cluster-network
+
+  cluster-heartbeat:
+    container_name: cluster-heartbeat
+    image: cluster-heartbeat
+    build: ./cluster-heartbeat
+#    user: root
+#    command:
+#      - "--setup"
+#      - "-e"
+#      - "--strict.perms=false"
+    depends_on:
+      - cluster-elasticsearch
     networks:
       - cluster-network
 volumes:
