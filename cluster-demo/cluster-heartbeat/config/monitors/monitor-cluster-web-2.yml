@@ -1,0 +1,5 @@
+- type: http
+  schedule: '@every 5s'
+  urls:
+    - http://cluster-web-2:8080/service/status
+  check.response.status: 200

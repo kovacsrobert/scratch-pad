@@ -90,11 +90,6 @@ services:
     container_name: cluster-heartbeat
     image: cluster-heartbeat
     build: ./cluster-heartbeat
-#    user: root
-#    command:
-#      - "--setup"
-#      - "-e"
-#      - "--strict.perms=false"
     depends_on:
       - cluster-elasticsearch
     networks:
