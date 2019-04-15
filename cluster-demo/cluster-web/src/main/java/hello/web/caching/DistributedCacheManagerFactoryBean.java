@@ -1,16 +1,19 @@
 package hello.web.caching;
 
-import net.sf.ehcache.CacheException;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.config.CacheConfiguration;
-import net.sf.ehcache.config.Configuration;
+import static java.util.concurrent.TimeUnit.HOURS;
+
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
-import static java.util.concurrent.TimeUnit.HOURS;
+import net.sf.ehcache.CacheException;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.config.CacheConfiguration;
+import net.sf.ehcache.config.Configuration;
+import net.sf.ehcache.config.TerracottaClientConfiguration;
+import net.sf.ehcache.config.TerracottaConfiguration;
 
-public class CacheManagerFactoryBean implements FactoryBean<CacheManager>, InitializingBean, DisposableBean {
+public class DistributedCacheManagerFactoryBean implements FactoryBean<CacheManager>, InitializingBean, DisposableBean {
 
     private CacheManager cacheManager;
 
@@ -19,10 +22,12 @@ public class CacheManagerFactoryBean implements FactoryBean<CacheManager>, Initi
         defaultCacheConfiguration.setMaxEntriesLocalHeap(100);
         defaultCacheConfiguration.setTimeToIdleSeconds(HOURS.toSeconds(4));
         defaultCacheConfiguration.setTimeToLiveSeconds(HOURS.toSeconds(24));
+        defaultCacheConfiguration.addTerracotta(new TerracottaConfiguration());
+        defaultCacheConfiguration.copyOnRead(true);
 
         Configuration configuration = new Configuration();
         configuration.setDefaultCacheConfiguration(defaultCacheConfiguration);
-        configuration.addCacheManagerPeerProviderFactory(new CacheManagerPeerProviderConfiguration());
+        configuration.addTerracottaConfig(new TerracottaClientConfiguration().url("cluster-terracotta", "9510"));
         configuration.setName("ReplicationCacheManager");
 
         this.cacheManager = new CacheManager(configuration);

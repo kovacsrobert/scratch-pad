@@ -21,19 +21,26 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven { url "http://repo.spring.io/libs-release/" }
     }
 }
 
 subprojects {
     dependencies {
+        // spring
         compile('org.springframework.boot:spring-boot-starter-web:2.1.3.RELEASE') {
             exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         }
         compile('org.springframework.boot:spring-boot-starter-log4j2:2.1.3.RELEASE')
         compile('org.springframework:spring-context:5.0.9.RELEASE')
         compile('org.springframework:spring-context-support:5.0.9.RELEASE')
-        compile('net.sf.ehcache:ehcache:2.10.6')
+
+        // caching
+        compile('net.sf.ehcache:ehcache:2.10.5')
         compile('net.sf.ehcache:ehcache-jgroupsreplication:1.7')
+        compile('org.terracotta:terracotta-toolkit-runtime:4.3.1')
+
+        // utility & logging
         compile('com.google.guava:guava:21.0')
         compile('org.apache.logging.log4j:log4j-api:2.11.2')
         compile('org.apache.logging.log4j:log4j-core:2.11.2')
@@ -56,6 +63,8 @@ configure(subprojects.findAll {it.name == "cluster-dao" || it.name == "cluster-w
     }
 
     docker {
+        dependsOn clean
+        dependsOn build
         name "${project.name}"
         copySpec.from(tasks.unpack.outputs).into("dependency")
         buildArgs(['DEPENDENCY': "dependency"])

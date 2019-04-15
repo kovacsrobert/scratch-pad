@@ -14,6 +14,8 @@ services:
     environment:
       - INSTANCE_NAME=cluster-web-1
       - DAO_URL=http://cluster-dao:8090
+      #- SPRING_PROFILES_ACTIVE=cacheReplication
+      - SPRING_PROFILES_ACTIVE=cacheDistribution
     networks:
       - cluster-network
   cluster-web-2:
@@ -30,12 +32,16 @@ services:
     environment:
       - INSTANCE_NAME=cluster-web-2
       - DAO_URL=http://cluster-dao:8090
+      #- SPRING_PROFILES_ACTIVE=cacheReplication
+      - SPRING_PROFILES_ACTIVE=cacheDistribution
     networks:
     - cluster-network
   cluster-dao:
     container_name: cluster-dao
     image: cluster-dao
     build: cluster-dao
+    depends_on:
+      - cluster-terracotta
     volumes:
       - /tmp:/tmp
       - log-dir:/tmp/cluster/logs/
@@ -45,37 +51,48 @@ services:
       - INSTANCE_NAME=cluster-dao
     networks:
       - cluster-network
-  cluster-elasticsearch:
-    container_name: cluster-elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
+  cluster-terracotta:
+    container_name: cluster-terracotta
+    image: terracotta/terracotta-server-oss:4.3.5
     ports:
-      - "9200:9200"
-      - "9300:9300"
-    environment:
-      - discovery.type=single-node
+      - "9510:9510"
+      - "9530:9530"
+      - "9540:9540"
     networks:
       - cluster-network
-  cluster-kibana:
-    container_name: cluster-kibana
-    image: docker.elastic.co/kibana/kibana:7.0.0
-    depends_on:
-      - cluster-elasticsearch
-    ports:
-      - "5601:5601"
-    environment:
-      - ELASTICSEARCH_HOSTS=http://cluster-elasticsearch:9200
-    networks:
-      - cluster-network
-  cluster-heartbeat:
-    container_name: cluster-heartbeat
-    image: cluster-heartbeat
-    build: ./cluster-heartbeat
-    restart: always
-    depends_on:
-      - cluster-elasticsearch
-      - cluster-kibana
-    networks:
-      - cluster-network
+
+#  cluster-elasticsearch:
+#    container_name: cluster-elasticsearch
+#    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
+#    ports:
+#      - "9200:9200"
+#      - "9300:9300"
+#    environment:
+#      - discovery.type=single-node
+#    networks:
+#      - cluster-network
+#  cluster-kibana:
+#    container_name: cluster-kibana
+#    image: docker.elastic.co/kibana/kibana:7.0.0
+#    depends_on:
+#      - cluster-elasticsearch
+#    ports:
+#      - "5601:5601"
+#    environment:
+#      - ELASTICSEARCH_HOSTS=http://cluster-elasticsearch:9200
+#    networks:
+#      - cluster-network
+#  cluster-heartbeat:
+#    container_name: cluster-heartbeat
+#    image: cluster-heartbeat
+#    build: ./cluster-heartbeat
+#    restart: always
+#    depends_on:
+#      - cluster-elasticsearch
+#      - cluster-kibana
+#    networks:
+#      - cluster-network
+
 volumes:
   log-dir:
 networks:

@@ -5,23 +5,27 @@ import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.bootstrap.BootstrapCacheLoader;
 import net.sf.ehcache.distribution.jgroups.JGroupsBootstrapCacheLoaderFactory;
 import net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicator;
+
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.util.Collections;
 import java.util.Properties;
 
 @Configuration
-public class CacheConfiguration {
+@Profile("cacheReplication")
+public class ReplicationCachingConfiguration {
 
     @Bean
-    public CacheManagerFactoryBean cacheManagerFactoryBean() {
-        return new CacheManagerFactoryBean();
+    public FactoryBean<CacheManager> cacheManagerFactoryBean() {
+        return new ReplicationCacheManagerFactoryBean();
     }
 
     @Bean
-    public CacheManager cacheManager() {
+    public CacheManager cacheManager() throws Exception {
         return cacheManagerFactoryBean().getObject();
     }
 
@@ -38,7 +42,7 @@ public class CacheConfiguration {
     }
 
     @Bean
-    public EhCacheFactoryBean helloCacheFactoryBean() {
+    public EhCacheFactoryBean helloCacheFactoryBean() throws Exception {
         EhCacheFactoryBean ehCacheFactoryBean = new EhCacheFactoryBean();
         ehCacheFactoryBean.setCacheManager(cacheManager());
         ehCacheFactoryBean.setBootstrapCacheLoader(bootstrapCacheLoader());
@@ -48,7 +52,7 @@ public class CacheConfiguration {
     }
 
     @Bean
-    public Ehcache helloCache() {
+    public Ehcache helloCache() throws Exception {
         return helloCacheFactoryBean().getObject();
     }
 }

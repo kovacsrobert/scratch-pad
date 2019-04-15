@@ -7,9 +7,10 @@ import net.sf.ehcache.distribution.jgroups.JGroupsCacheManagerPeerProviderFactor
 
 import static java.text.MessageFormat.format;
 
-public class CacheManagerPeerProviderConfiguration extends FactoryConfiguration<CacheManagerPeerProviderConfiguration> {
+public class ReplicationCacheManagerPeerProviderConfiguration
+        extends FactoryConfiguration<ReplicationCacheManagerPeerProviderConfiguration> {
 
-    public CacheManagerPeerProviderConfiguration() {
+    public ReplicationCacheManagerPeerProviderConfiguration() {
         setClass(JGroupsCacheManagerPeerProviderFactory.class.getName());
         setProperties(format("connect={0}", getParameters()));
         setPropertySeparator("::");
