@@ -27,8 +27,8 @@ public class DistributedCacheManagerFactoryBean implements FactoryBean<CacheMana
 
         Configuration configuration = new Configuration();
         configuration.setDefaultCacheConfiguration(defaultCacheConfiguration);
-        configuration.addTerracottaConfig(new TerracottaClientConfiguration().url("cluster-terracotta", "9510"));
-        configuration.setName("ReplicationCacheManager");
+        configuration.addTerracottaConfig(new TerracottaClientConfiguration().url("localhost", "9510"));
+        configuration.setName("DistributionCacheManager");
 
         this.cacheManager = new CacheManager(configuration);
     }

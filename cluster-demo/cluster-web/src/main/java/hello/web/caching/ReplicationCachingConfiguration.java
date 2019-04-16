@@ -47,7 +47,7 @@ public class ReplicationCachingConfiguration {
         ehCacheFactoryBean.setCacheManager(cacheManager());
         ehCacheFactoryBean.setBootstrapCacheLoader(bootstrapCacheLoader());
         ehCacheFactoryBean.setCacheEventListeners(Collections.singleton(new JGroupsCacheReplicator(true, true, true, true)));
-        ehCacheFactoryBean.setName("helloCache");
+        ehCacheFactoryBean.setCacheName("helloCache");
         return ehCacheFactoryBean;
     }
 

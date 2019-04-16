@@ -24,19 +24,20 @@ public class DistributedCachingConfiguration {
         return cacheManagerFactoryBean().getObject();
     }
 
-//    @Bean
-//    public EhCacheFactoryBean helloCacheFactoryBean() throws Exception {
-//        EhCacheFactoryBean ehCacheFactoryBean = new EhCacheFactoryBean();
-//        ehCacheFactoryBean.setCacheManager(cacheManager());
-//        ehCacheFactoryBean.terracotta(new TerracottaConfiguration());
-//        ehCacheFactoryBean.setName("helloCache");
-//        ehCacheFactoryBean.setMaxEntriesInCache(1000);
-//        return ehCacheFactoryBean;
-//    }
+    @Bean
+    public EhCacheFactoryBean helloCacheFactoryBean() throws Exception {
+        EhCacheFactoryBean ehCacheFactoryBean = new DistributableEhCacheFactoryBean();
+        ehCacheFactoryBean.setCacheManager(cacheManager());
+        ehCacheFactoryBean.terracotta(new TerracottaConfiguration());
+        ehCacheFactoryBean.setCacheName("helloCache");
+        ehCacheFactoryBean.setMaxElementsOnDisk(0);
+        return ehCacheFactoryBean;
+    }
 
     @Bean
     public Ehcache helloCache() throws Exception {
-        cacheManager().addCache("helloCache");
-        return cacheManager().getEhcache("helloCache");
+        return helloCacheFactoryBean().getObject();
+//        cacheManager().addCache("helloCache");
+//        return cacheManager().getEhcache("helloCache");
     }
 }
