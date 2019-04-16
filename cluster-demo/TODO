@@ -3,7 +3,7 @@ Backlog:
 - add ELK stack in docker-compose
 - add SpringCloud logging solution
 - add db to dao component
-- use terracotta for distributed caching
+
 - try docker swarm
 - add testing/loading solution
 - add heartbeat solution
@@ -19,3 +19,4 @@ Done:
 + add parent project (gradle)
 + generate tmp files to /tmp, not into current dir
 + add util module
++ use terracotta for distributed caching

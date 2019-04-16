@@ -1,7 +1,7 @@
 package hello.web.config;
 
+import static hello.util.EnvironmentUtils.getConfiguration;
 import static hello.web.config.EnvironmentVariables.INSTANCE_NAME;
-import static hello.web.util.EnvironmentUtils.getConfiguration;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
 package hello.web.config;
 
+import static hello.util.EnvironmentUtils.getConfiguration;
 import static hello.web.config.EnvironmentVariables.DAO_URL;
-import static hello.web.util.EnvironmentUtils.getConfiguration;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
