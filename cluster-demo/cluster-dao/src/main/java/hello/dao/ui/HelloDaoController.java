@@ -19,7 +19,7 @@ public class HelloDaoController {
 		this.helloDao = helloDao;
 	}
 
-	@GetMapping("/hello/dao/{name}")
+	@GetMapping("/hello/{name}")
 	public String welcome(@PathVariable("name") String name) {
 		logger.debug("HelloDaoController.hello(" + name + ")");
 		return helloDao.welcome(name);

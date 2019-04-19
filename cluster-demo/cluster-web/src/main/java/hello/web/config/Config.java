@@ -14,7 +14,7 @@ public class Config {
 	@Bean
 	public RestTemplateBuilder restTemplateBuilder() {
 		return new RestTemplateBuilder()
-				.rootUri(getConfiguration(DAO_URL, "http://cluster-dao:8090"));
+				.rootUri(getConfiguration(DAO_URL, "http://cluster-dao:8080"));
 	}
 
 	@Bean

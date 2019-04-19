@@ -2,6 +2,7 @@ package hello.web.caching;
 
 import static hello.util.EnvironmentUtils.getConfiguration;
 import static hello.web.config.EnvironmentVariables.TERRACOTTA_HOST;
+import static hello.web.config.Profiles.IGNORE_CACHING;
 import static org.ehcache.clustered.client.config.builders.ClusteredResourcePoolBuilder.clusteredDedicated;
 import static org.ehcache.config.builders.CacheManagerBuilder.newCacheManagerBuilder;
 import static org.ehcache.config.builders.ResourcePoolsBuilder.newResourcePoolsBuilder;
@@ -18,8 +19,10 @@ import org.ehcache.config.ResourcePools;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
+@Profile("!" + IGNORE_CACHING)
 public class CachingConfig {
 
 	@Bean

@@ -1,13 +1,17 @@
 package hello.web.provider;
 
+import static hello.web.config.Profiles.IGNORE_CACHING;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ehcache.Cache;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
 @Primary
+@Profile("!" + IGNORE_CACHING)
 public class CachingHelloProvider implements HelloProvider {
 
 	private static final Logger logger = LogManager.getLogger(DaoBasedHelloProvider.class);

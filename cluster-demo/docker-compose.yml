@@ -9,12 +9,12 @@ services:
       - cluster-dao
     volumes:
       - /tmp:/tmp
-      - log-dir:/tmp/cluster/logs/
+      - log-dir:/tmp/cluster-logs/
     ports:
       - "9090:8080"
     environment:
       - INSTANCE_NAME=cluster-web-1
-      - DAO_URL=http://cluster-dao:8090
+      - DAO_URL=http://cluster-dao:8080
       - TERRACOTTA_HOST=terracotta://cluster-terracotta:9410
     networks:
       - cluster-network
@@ -28,12 +28,12 @@ services:
       - cluster-dao
     volumes:
       - /tmp:/tmp
-      - log-dir:/tmp/cluster/logs/
+      - log-dir:/tmp/cluster-logs/
     ports:
       - "9091:8080"
     environment:
       - INSTANCE_NAME=cluster-web-2
-      - DAO_URL=http://cluster-dao:8090
+      - DAO_URL=http://cluster-dao:8080
       - TERRACOTTA_HOST=terracotta://cluster-terracotta:9410
     networks:
     - cluster-network
@@ -47,7 +47,7 @@ services:
       - cluster-terracotta
     volumes:
       - /tmp:/tmp
-      - log-dir:/tmp/cluster/logs/
+      - log-dir:/tmp/cluster-logs/
     ports:
       - "9092:8090"
     environment:
@@ -98,7 +98,7 @@ services:
     restart: always
     depends_on:
       - cluster-elasticsearch
-#      - cluster-kibana
+      - cluster-kibana
     networks:
       - cluster-network
 
