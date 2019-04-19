@@ -18,6 +18,7 @@ services:
       - TERRACOTTA_HOST=terracotta://cluster-terracotta:9410
     networks:
       - cluster-network
+
   cluster-web-2:
     container_name: cluster-web-2
     image: cluster-web-2
@@ -36,6 +37,7 @@ services:
       - TERRACOTTA_HOST=terracotta://cluster-terracotta:9410
     networks:
     - cluster-network
+
   cluster-dao:
     container_name: cluster-dao
     image: cluster-dao
@@ -52,6 +54,7 @@ services:
       - INSTANCE_NAME=cluster-dao
     networks:
       - cluster-network
+
   cluster-terracotta:
     container_name: cluster-terracotta
     image: terracotta/terracotta-server-oss:5.6.0
@@ -65,16 +68,17 @@ services:
     networks:
       - cluster-network
 
-#  cluster-elasticsearch:
-#    container_name: cluster-elasticsearch
-#    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
-#    ports:
-#      - "9200:9200"
-#      - "9300:9300"
-#    environment:
-#      - discovery.type=single-node
-#    networks:
-#      - cluster-network
+  cluster-elasticsearch:
+    container_name: cluster-elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+    networks:
+      - cluster-network
+
 #  cluster-kibana:
 #    container_name: cluster-kibana
 #    image: docker.elastic.co/kibana/kibana:7.0.0
@@ -86,16 +90,17 @@ services:
 #      - ELASTICSEARCH_HOSTS=http://cluster-elasticsearch:9200
 #    networks:
 #      - cluster-network
-#  cluster-heartbeat:
-#    container_name: cluster-heartbeat
-#    image: cluster-heartbeat
-#    build: ./cluster-heartbeat
-#    restart: always
-#    depends_on:
-#      - cluster-elasticsearch
+
+  cluster-heartbeat:
+    container_name: cluster-heartbeat
+    image: cluster-heartbeat
+    build: ./cluster-heartbeat
+    restart: always
+    depends_on:
+      - cluster-elasticsearch
 #      - cluster-kibana
-#    networks:
-#      - cluster-network
+    networks:
+      - cluster-network
 
 volumes:
   log-dir:

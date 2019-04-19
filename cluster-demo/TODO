@@ -1,12 +1,12 @@
 
 Backlog:
+- add heartbeat solution
 - add ELK stack in docker-compose
+- add filebeat solution
 - add SpringCloud logging solution
 - add db to dao component
-
 - try docker swarm
 - add testing/loading solution
-- add heartbeat solution
 - try solution in AWS
 - add load-balancing
 - add network in docker
