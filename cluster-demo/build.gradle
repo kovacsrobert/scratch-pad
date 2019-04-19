@@ -64,8 +64,6 @@ configure(subprojects.findAll {it.name == "cluster-dao" || it.name == "cluster-w
     }
 
     docker {
-        dependsOn clean
-        dependsOn build
         name "${project.name}"
         copySpec.from(tasks.unpack.outputs).into("dependency")
         buildArgs(['DEPENDENCY': "dependency"])

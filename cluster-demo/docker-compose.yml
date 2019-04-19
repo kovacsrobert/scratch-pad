@@ -79,17 +79,17 @@ services:
     networks:
       - cluster-network
 
-#  cluster-kibana:
-#    container_name: cluster-kibana
-#    image: docker.elastic.co/kibana/kibana:7.0.0
-#    depends_on:
-#      - cluster-elasticsearch
-#    ports:
-#      - "5601:5601"
-#    environment:
-#      - ELASTICSEARCH_HOSTS=http://cluster-elasticsearch:9200
-#    networks:
-#      - cluster-network
+  cluster-kibana:
+    container_name: cluster-kibana
+    image: docker.elastic.co/kibana/kibana:7.0.0
+    depends_on:
+      - cluster-elasticsearch
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://cluster-elasticsearch:9200
+    networks:
+      - cluster-network
 
   cluster-heartbeat:
     container_name: cluster-heartbeat
