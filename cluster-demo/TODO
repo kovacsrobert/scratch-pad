@@ -1,7 +1,5 @@
 
 Backlog:
-- add heartbeat solution
-- add ELK stack in docker-compose
 - add filebeat solution
 - add SpringCloud logging solution
 - add db to dao component
@@ -20,3 +18,5 @@ Done:
 + generate tmp files to /tmp, not into current dir
 + add util module
 + use terracotta for distributed caching
++ add heartbeat solution
++ add ELK stack in docker-compose
