@@ -1,5 +1,5 @@
 - type: http
   schedule: '@every 5s'
   urls:
-    - http://cluster-web-1:8080/actuator/health
+    - http://cluster-dao:8080/actuator/health
   check.response.status: 200
