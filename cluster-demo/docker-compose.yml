@@ -15,9 +15,7 @@ services:
     environment:
       - INSTANCE_NAME=cluster-web-1
       - DAO_URL=http://cluster-dao:8090
-      - TERRACOTTA_HOSTS=cluster-terracotta-1:9510,cluster-terracotta-2:9510
-      #- SPRING_PROFILES_ACTIVE=cacheReplication
-      - SPRING_PROFILES_ACTIVE=cacheDistribution
+      - TERRACOTTA_HOST=terracotta://cluster-terracotta:9410
     networks:
       - cluster-network
   cluster-web-2:
@@ -35,9 +33,7 @@ services:
     environment:
       - INSTANCE_NAME=cluster-web-2
       - DAO_URL=http://cluster-dao:8090
-      - TERRACOTTA_HOSTS=cluster-terracotta-1:9510,cluster-terracotta-2:9510
-      #- SPRING_PROFILES_ACTIVE=cacheReplication
-      - SPRING_PROFILES_ACTIVE=cacheDistribution
+      - TERRACOTTA_HOST=terracotta://cluster-terracotta:9410
     networks:
     - cluster-network
   cluster-dao:
@@ -46,8 +42,7 @@ services:
     build: cluster-dao
     restart: on-failure
     depends_on:
-      - cluster-terracotta-1
-      - cluster-terracotta-2
+      - cluster-terracotta
     volumes:
       - /tmp:/tmp
       - log-dir:/tmp/cluster/logs/
@@ -57,30 +52,16 @@ services:
       - INSTANCE_NAME=cluster-dao
     networks:
       - cluster-network
-  cluster-terracotta-1:
-    container_name: cluster-terracotta-1
-    image: terracotta/terracotta-server-oss:4.3.5
-    hostname: cluster-terracotta-1
-    environment:
-      - TC_SERVER1=cluster-terracotta-1
-      - TC_SERVER2=cluster-terracotta-2
+  cluster-terracotta:
+    container_name: cluster-terracotta
+    image: terracotta/terracotta-server-oss:5.6.0
+    hostname: cluster-terracotta
     ports:
       - "9510:9510"
-      - "9530:9530"
-      - "9540:9540"
-    networks:
-      - cluster-network
-  cluster-terracotta-2:
-    container_name: cluster-terracotta-2
-    image: terracotta/terracotta-server-oss:4.3.5
-    hostname: cluster-terracotta-2
     environment:
-      - TC_SERVER1=cluster-terracotta-1
-      - TC_SERVER2=cluster-terracotta-2
-    ports:
-      - "9610:9510"
-      - "9630:9530"
-      - "9640:9540"
+      - OFFHEAP_RESOURCE1_NAME=offheap-hello
+      - OFFHEAP_RESOURCE1_UNIT=MB
+      - OFFHEAP_RESOURCE1_SIZE=2
     networks:
       - cluster-network
 

@@ -36,9 +36,10 @@ subprojects {
         compile('org.springframework:spring-context-support:5.0.9.RELEASE')
 
         // caching
-        compile('net.sf.ehcache:ehcache:2.10.5')
-        compile('net.sf.ehcache:ehcache-jgroupsreplication:1.7')
-        compile('org.terracotta:terracotta-toolkit-runtime:4.3.1')
+        compile group: 'org.ehcache', name: 'ehcache', version: '3.7.1'
+        compile group: 'org.ehcache', name: 'ehcache-clustered', version: '3.7.1'
+//        compile('net.sf.ehcache:ehcache-jgroupsreplication:1.7')
+//        compile('org.terracotta:terracotta-toolkit-runtime:4.3.1')
 
         // utility & logging
         compile('com.google.guava:guava:21.0')
