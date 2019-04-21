@@ -3,5 +3,4 @@ rootProject.name = 'cluster-demo'
 include 'cluster-util'
 include 'cluster-dao'
 include 'cluster-web'
-include 'cluster-client'
 
