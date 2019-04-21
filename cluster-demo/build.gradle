@@ -49,7 +49,7 @@ subprojects {
     }
 }
 
-configure(subprojects.findAll {it.name == "cluster-dao" || it.name == "cluster-web"}) {
+configure(subprojects.findAll {it.name == "cluster-dao" || it.name == "cluster-web" || it.name == "cluster-client"}) {
 
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'

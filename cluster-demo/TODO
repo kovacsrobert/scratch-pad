@@ -1,6 +1,6 @@
 
 Backlog:
-- refine filebeat fields: host, log-level
+- refine filebeat fields with logstash: host, log-level
 - add SpringCloud logging solution
 - add db to dao component
 - try docker swarm
