@@ -1,0 +1,13 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /tmp/cluster-logs/cluster-web-1.log
+      - /tmp/cluster-logs/cluster-web-2.log
+      - /tmp/cluster-logs/cluster-dao.log
+output.elasticsearch:
+  hosts: ["http://cluster-elasticsearch:9200"]
+  index: "cluster-filebeat-%{+yyyy.MM.dd}"
+setup.template:
+  name: "cluster-filebeat"
+  pattern: "cluster-filebeat-*"

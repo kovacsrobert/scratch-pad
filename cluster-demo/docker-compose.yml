@@ -102,6 +102,19 @@ services:
     networks:
       - cluster-network
 
+  cluster-filebeat:
+    container_name: cluster-filebeat
+    image: cluster-filebeat
+    build: ./cluster-filebeat
+    restart: always
+    depends_on:
+      - cluster-elasticsearch
+      - cluster-kibana
+    volumes:
+      - log-dir:/tmp/cluster-logs/
+    networks:
+      - cluster-network
+
 volumes:
   log-dir:
 networks:
