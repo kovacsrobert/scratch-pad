@@ -23,7 +23,7 @@ public class HelloController {
 
     @GetMapping("/hello/{name}")
     public String hello(@PathVariable(value = "name", required = false) String name) {
-        logger.debug("HelloController.hello(" + name + ")");
+        logger.info("HelloController.hello(" + name + ")");
         return helloProvider.welcome(enrichName(name));
     }
 

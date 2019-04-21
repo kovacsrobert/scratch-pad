@@ -1,0 +1,8 @@
+docker run --rm -it docker.elastic.co/logstash/logstash:7.0.0
+docker run --rm -d docker.elastic.co/logstash/logstash:7.0.0
+docker run --rm -it -v ~/workspace/scratch-pad/cluster-demo/cluster-logstash/logstash.yml:/usr/share/logstash/config/logstash.yml docker.elastic.co/logstash/logstash:7.0.0
+docker run --rm -it -v ~/workspace/scratch-pad/cluster-demo/cluster-logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf docker.elastic.co/logstash/logstash:7.0.0
+docker run --rm -it -v ~/workspace/scratch-pad/cluster-demo/cluster-logstash/logstash.yml:/usr/share/logstash/config/logstash.yml -v ~/workspace/scratch-pad/cluster-demo/cluster-logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf docker.elastic.co/logstash/logstash:7.0.0
+
+/usr/share/logstash/config/logstash.yml
+/usr/share/logstash/pipeline/logstash.conf

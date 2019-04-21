@@ -1,0 +1,52 @@
+Connected to the target VM, address: '127.0.0.1:35797', transport: 'socket'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.0.5.RELEASE)
+
+[INFO ] 2019-04-21 19:42:14.914 [main] Application [] - Starting Application on rpd-pc with PID 24912 (/home/rpd/workspace/scratch-pad/cluster-demo/out/production/cluster-web started by rpd in /home/rpd/workspace/scratch-pad/cluster-demo)
+[INFO ] 2019-04-21 19:42:14.917 [main] Application [] - The following profiles are active: fakeDao,ignoreCaching
+[INFO ] 2019-04-21 19:42:14.936 [main] AnnotationConfigServletWebServerApplicationContext [] - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@6da00fb9: startup date [Sun Apr 21 19:42:14 CEST 2019]; root of context hierarchy
+[INFO ] 2019-04-21 19:42:15.560 [main] TomcatWebServer [] - Tomcat initialized with port(s): 9090 (http)
+[INFO ] 2019-04-21 19:42:15.571 [main] Http11NioProtocol [] - Initializing ProtocolHandler ["http-nio-9090"]
+[INFO ] 2019-04-21 19:42:15.575 [main] StandardService [] - Starting service [Tomcat]
+[INFO ] 2019-04-21 19:42:15.576 [main] StandardEngine [] - Starting Servlet Engine: Apache Tomcat/8.5.34
+[INFO ] 2019-04-21 19:42:15.578 [localhost-startStop-1] AprLifecycleListener [] - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib]
+[INFO ] 2019-04-21 19:42:15.614 [localhost-startStop-1] [/] [] - Initializing Spring embedded WebApplicationContext
+[INFO ] 2019-04-21 19:42:15.614 [localhost-startStop-1] ContextLoader [] - Root WebApplicationContext: initialization completed in 680 ms
+[INFO ] 2019-04-21 19:42:15.884 [localhost-startStop-1] FilterRegistrationBean [] - Mapping filter: 'characterEncodingFilter' to: [/*]
+[INFO ] 2019-04-21 19:42:15.885 [localhost-startStop-1] FilterRegistrationBean [] - Mapping filter: 'webMvcMetricsFilter' to: [/*]
+[INFO ] 2019-04-21 19:42:15.885 [localhost-startStop-1] FilterRegistrationBean [] - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+[INFO ] 2019-04-21 19:42:15.885 [localhost-startStop-1] FilterRegistrationBean [] - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+[INFO ] 2019-04-21 19:42:15.885 [localhost-startStop-1] FilterRegistrationBean [] - Mapping filter: 'requestContextFilter' to: [/*]
+[INFO ] 2019-04-21 19:42:15.885 [localhost-startStop-1] FilterRegistrationBean [] - Mapping filter: 'httpTraceFilter' to: [/*]
+[INFO ] 2019-04-21 19:42:15.885 [localhost-startStop-1] FilterRegistrationBean [] - Mapping filter: 'loggingContextFilter' to: [/*]
+[INFO ] 2019-04-21 19:42:15.885 [localhost-startStop-1] ServletRegistrationBean [] - Servlet dispatcherServlet mapped to [/]
+[INFO ] 2019-04-21 19:42:15.986 [main] SimpleUrlHandlerMapping [] - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+[INFO ] 2019-04-21 19:42:16.066 [main] RequestMappingHandlerAdapter [] - Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@6da00fb9: startup date [Sun Apr 21 19:42:14 CEST 2019]; root of context hierarchy
+[INFO ] 2019-04-21 19:42:16.093 [main] RequestMappingHandlerMapping [] - Mapped "{[/hello/{name}],methods=[GET]}" onto public java.lang.String hello.web.ui.HelloController.hello(java.lang.String)
+[INFO ] 2019-04-21 19:42:16.094 [main] RequestMappingHandlerMapping [] - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+[INFO ] 2019-04-21 19:42:16.095 [main] RequestMappingHandlerMapping [] - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+[INFO ] 2019-04-21 19:42:16.109 [main] SimpleUrlHandlerMapping [] - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+[INFO ] 2019-04-21 19:42:16.109 [main] SimpleUrlHandlerMapping [] - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+[INFO ] 2019-04-21 19:42:16.242 [main] EndpointLinksResolver [] - Exposing 1 endpoint(s) beneath base path '/actuator'
+[INFO ] 2019-04-21 19:42:16.247 [main] WebMvcEndpointHandlerMapping [] - Mapped "{[/actuator/health],methods=[GET],produces=[application/vnd.spring-boot.actuator.v2+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.web.servlet.AbstractWebMvcEndpointHandlerMapping$OperationHandler.handle(javax.servlet.http.HttpServletRequest,java.util.Map<java.lang.String, java.lang.String>)
+[INFO ] 2019-04-21 19:42:16.248 [main] WebMvcEndpointHandlerMapping [] - Mapped "{[/actuator],methods=[GET],produces=[application/vnd.spring-boot.actuator.v2+json || application/json]}" onto protected java.util.Map<java.lang.String, java.util.Map<java.lang.String, org.springframework.boot.actuate.endpoint.web.Link>> org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping.links(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+[INFO ] 2019-04-21 19:42:16.274 [main] AnnotationMBeanExporter [] - Registering beans for JMX exposure on startup
+[INFO ] 2019-04-21 19:42:16.285 [main] Http11NioProtocol [] - Starting ProtocolHandler ["http-nio-9090"]
+[INFO ] 2019-04-21 19:42:16.288 [main] NioSelectorPool [] - Using a shared selector for servlet write/read
+[INFO ] 2019-04-21 19:42:16.295 [main] TomcatWebServer [] - Tomcat started on port(s): 9090 (http) with context path ''
+[INFO ] 2019-04-21 19:42:16.297 [main] Application [] - Started Application in 1.546 seconds (JVM running for 1.981)
+[INFO ] 2019-04-21 19:42:16.704 [RMI TCP Connection(2)-127.0.0.1] [/] [] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+[INFO ] 2019-04-21 19:42:16.704 [RMI TCP Connection(2)-127.0.0.1] DispatcherServlet [] - FrameworkServlet 'dispatcherServlet': initialization started
+[INFO ] 2019-04-21 19:42:16.711 [RMI TCP Connection(2)-127.0.0.1] DispatcherServlet [] - FrameworkServlet 'dispatcherServlet': initialization completed in 7 ms
+[INFO ] 2019-04-21 19:42:18.673 [http-nio-9090-exec-1] HelloController [cluster-web-1] - HelloController.hello(Ted)
+[INFO ] 2019-04-21 19:42:24.389 [http-nio-9090-exec-3] HelloController [cluster-web-1] - HelloController.hello(Ted)
+[INFO ] 2019-04-21 19:42:24.553 [http-nio-9090-exec-5] HelloController [cluster-web-1] - HelloController.hello(Ted)
+[INFO ] 2019-04-21 19:42:24.702 [http-nio-9090-exec-6] HelloController [cluster-web-1] - HelloController.hello(Ted)
+[INFO ] 2019-04-21 19:42:24.895 [http-nio-9090-exec-9] HelloController [cluster-web-1] - HelloController.hello(Ted)
+[INFO ] 2019-04-21 19:42:25.086 [http-nio-9090-exec-1] HelloController [cluster-web-1] - HelloController.hello(Ted)

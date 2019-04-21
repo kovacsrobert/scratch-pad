@@ -4,7 +4,6 @@ services:
     container_name: cluster-web-1
     image: cluster-web-1
     build: cluster-web
-    restart: on-failure
     depends_on:
       - cluster-dao
     volumes:
@@ -23,7 +22,6 @@ services:
     container_name: cluster-web-2
     image: cluster-web-2
     build: cluster-web
-    restart: on-failure
     depends_on:
       - cluster-dao
     volumes:
@@ -42,7 +40,6 @@ services:
     container_name: cluster-dao
     image: cluster-dao
     build: cluster-dao
-    restart: on-failure
     depends_on:
       - cluster-terracotta
     volumes:
@@ -84,6 +81,7 @@ services:
     image: docker.elastic.co/kibana/kibana:7.0.0
     depends_on:
       - cluster-elasticsearch
+      - cluster-logstash
     ports:
       - "5601:5601"
     environment:
@@ -91,11 +89,23 @@ services:
     networks:
       - cluster-network
 
+  cluster-logstash:
+    container_name: cluster-logstash
+    image: docker.elastic.co/logstash/logstash:7.0.0
+    depends_on:
+      - cluster-elasticsearch
+    volumes:
+      - ./cluster-logstash/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./cluster-logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+#    ports:
+#      - "5044:5044"
+    networks:
+      - cluster-network
+
   cluster-heartbeat:
     container_name: cluster-heartbeat
     image: cluster-heartbeat
     build: ./cluster-heartbeat
-    restart: always
     depends_on:
       - cluster-elasticsearch
       - cluster-kibana
@@ -106,7 +116,6 @@ services:
     container_name: cluster-filebeat
     image: cluster-filebeat
     build: ./cluster-filebeat
-    restart: always
     depends_on:
       - cluster-elasticsearch
       - cluster-kibana
