@@ -1,0 +1,11 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /tmp/example.log
+output.logstash:
+  hosts: ["cluster-logstash"]
+  index: "cluster-filebeat-%{+yyyy.MM.dd}"
+setup.template:
+  name: "cluster-filebeat"
+  pattern: "cluster-filebeat-*"
