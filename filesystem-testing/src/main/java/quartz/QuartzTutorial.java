@@ -1,36 +1,35 @@
 package quartz;
 
+import static org.quartz.JobBuilder.newJob;
+
+import java.text.ParseException;
+import java.util.Date;
+
 import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
-import org.quartz.SimpleTrigger;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
-import static org.quartz.TriggerBuilder.newTrigger;
-
 public class QuartzTutorial {
 
-	public static void main(String[] args) throws SchedulerException {
+	public static void main(String[] args) throws SchedulerException, ParseException {
 		Scheduler scheduler = initScheduler();
 
 		JobDetail jobDetail = newJob(HelloJob.class)
 				.withIdentity("hello-job")
 				.build();
-		SimpleTrigger trigger = newTrigger()
-				.withIdentity("trigger")
-				.withSchedule(simpleSchedule()
-						.withIntervalInSeconds(1)
-						.repeatForever())
-				.build();
 
-		scheduler.scheduleJob(jobDetail, trigger);
+		MyCronTriggerImpl trigger2 = new MyCronTriggerImpl();
+		trigger2.setName("MyCronTriggerImpl");
+		trigger2.setCronExpression("0/1 * * * * ? *");
+		trigger2.setStartTime(new Date());
+
+		scheduler.scheduleJob(jobDetail, trigger2);
 	}
 
 	private static Scheduler initScheduler() throws SchedulerException {
@@ -45,8 +44,10 @@ public class QuartzTutorial {
 		private static final Logger logger = LoggerFactory.getLogger(HelloJob.class);
 
 		@Override
-		public void execute(JobExecutionContext context) {
+		public void execute(JobExecutionContext context) throws HelloException {
 			logger.info("Hello, buddy");
+
+			throw new HelloException(".. Bye");
 		}
 	}
 }
