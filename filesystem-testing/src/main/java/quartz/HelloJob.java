@@ -44,6 +44,13 @@ public class HelloJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        if ("Brian".equals(jobContext.getGuestName()) && jobContext.getGreetingsCounter() >= 3) {
+            JobExecutionException jobExecutionException = new JobExecutionException("Brian leaves");
+            jobExecutionException.setUnscheduleAllTriggers(true);
+            jobExecutionException.setUnscheduleFiringTrigger(false);
+            jobExecutionException.setRefireImmediately(false);
+            throw jobExecutionException;
+        }
         //context.getMergedJobDataMap().put(GREETINGS_COUNTER, ++greetingsCounter);
         stopExecution(2000L);
         jobContext.increaseCounter();
@@ -87,6 +94,9 @@ public class HelloJob implements Job {
         JobDataMap tobyJobDataMap = new JobDataMap();
         tobyJobDataMap.put("jobContext", new HelloJobContext(0, "Toby"));
 
+        JobDataMap brianJobDataMap = new JobDataMap();
+        brianJobDataMap.put("jobContext", new HelloJobContext(0, "Brian"));
+
         JobDetail mikeJobDetail = newJob(HelloJob.class)
                 .withIdentity("mike", HELLO_GROUP)
                 .setJobData(mikeJobDataMap)
@@ -94,6 +104,10 @@ public class HelloJob implements Job {
         JobDetail tobyJobDetail = newJob(HelloJob.class)
                 .withIdentity("toby", HELLO_GROUP)
                 .setJobData(tobyJobDataMap)
+                .build();
+        JobDetail brianJobDetail = newJob(HelloJob.class)
+                .withIdentity("brian", HELLO_GROUP)
+                .setJobData(brianJobDataMap)
                 .build();
 
         SimpleTrigger mikeTrigger = newTrigger()
@@ -109,9 +123,16 @@ public class HelloJob implements Job {
                         .withIntervalInSeconds(1)
                         .repeatForever())
                 .build();
+        SimpleTrigger brianTrigger = newTrigger()
+                .withIdentity("brian", HELLO_GROUP)
+                .withSchedule(simpleSchedule()
+                        .withIntervalInSeconds(1)
+                        .repeatForever())
+                .build();
 
         scheduler.scheduleJob(mikeJobDetail, mikeTrigger);
-        scheduler.scheduleJob(tobyJobDetail, tobyTrigger);
+        //scheduler.scheduleJob(tobyJobDetail, tobyTrigger);
+        scheduler.scheduleJob(brianJobDetail, brianTrigger);
 
         scheduler.start();
     }
