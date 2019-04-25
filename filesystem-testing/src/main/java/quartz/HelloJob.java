@@ -45,14 +45,10 @@ public class HelloJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         if ("Brian".equals(jobContext.getGuestName()) && jobContext.getGreetingsCounter() >= 3) {
-            JobExecutionException jobExecutionException = new JobExecutionException("Brian leaves");
-            jobExecutionException.setUnscheduleAllTriggers(true);
-            jobExecutionException.setUnscheduleFiringTrigger(false);
-            jobExecutionException.setRefireImmediately(false);
-            throw jobExecutionException;
+            throw new HelloException("Brian leaves");
         }
         //context.getMergedJobDataMap().put(GREETINGS_COUNTER, ++greetingsCounter);
-        stopExecution(2000L);
+        stopExecution(1000L);
         jobContext.increaseCounter();
         //context.getJobDetail().getJobDataMap().put(GREETINGS_COUNTER, ++greetingsCounter);
         logger.info("Hello, " + jobContext.getGuestName() + " for the " + jobContext.getGreetingsCounter() + ". times. Run-time: " + context.getFireTime());
