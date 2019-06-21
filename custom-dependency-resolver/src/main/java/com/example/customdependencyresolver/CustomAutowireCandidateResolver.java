@@ -15,11 +15,11 @@ public class CustomAutowireCandidateResolver extends QualifierAnnotationAutowire
 	private static final Logger logger = LogManager.getLogger(CustomAutowireCandidateResolver.class);
 
 	@Override
-	public boolean isAutowireCandidate(BeanDefinitionHolder bdHolder, DependencyDescriptor descriptor) {
+	protected boolean checkGenericTypeMatch(BeanDefinitionHolder bdHolder, DependencyDescriptor descriptor) {
 		if (shouldWiredByQualifier(bdHolder)) {
-			logger.warn("{} will be autowired based on qualifier only", bdHolder.getBeanName());
+			return true;
 		}
-		return super.isAutowireCandidate(bdHolder, descriptor);
+		return super.checkGenericTypeMatch(bdHolder, descriptor);
 	}
 
 	private boolean shouldWiredByQualifier(BeanDefinitionHolder bdHolder) {
@@ -40,18 +40,5 @@ public class CustomAutowireCandidateResolver extends QualifierAnnotationAutowire
 			logger.error(e);
 		}
 		return false;
-	}
-
-	@Override
-	protected boolean checkGenericTypeMatch(BeanDefinitionHolder bdHolder, DependencyDescriptor descriptor) {
-		if (shouldWiredByQualifier(bdHolder)) {
-			return true;
-		}
-		return super.checkGenericTypeMatch(bdHolder, descriptor);
-	}
-
-	@Override
-	public Object getSuggestedValue(DependencyDescriptor descriptor) {
-		return super.getSuggestedValue(descriptor);
 	}
 }
