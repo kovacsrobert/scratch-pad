@@ -46,7 +46,7 @@ public class DtoRepository {
 			preparedStatement.setString(1, id.toString());
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
-				return Optional.of(new Dto(id.toString()));
+				return Optional.of(new Dto(resultSet.getString("id")));
 			} else {
 				return Optional.empty();
 			}

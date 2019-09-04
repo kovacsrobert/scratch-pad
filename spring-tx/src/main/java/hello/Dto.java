@@ -3,13 +3,8 @@ package hello;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity
 public class Dto {
 
-    @Id
     private String id;
 
 	public Dto() {

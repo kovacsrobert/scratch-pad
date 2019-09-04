@@ -1,12 +1,10 @@
 package hello;
 
-import java.util.UUID;
-
 import org.springframework.transaction.support.TransactionCallback;
 
 public interface TxService {
 
-	void execute(TransactionCallback<UUID> action);
+	<T> T execute(TransactionCallback<T> action);
 
-	void executeNested(TransactionCallback<UUID> action);
+	<T> T executeNested(TransactionCallback<T> action);
 }
