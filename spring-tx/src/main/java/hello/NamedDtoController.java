@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class MainController {
+public class NamedDtoController {
 
 	@Autowired
 	private NamedDtoRepository userRepository;
