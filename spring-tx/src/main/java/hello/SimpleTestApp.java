@@ -22,8 +22,11 @@ public class SimpleTestApp {
 		final UUID id1 = UUID.randomUUID();
 
 		txService.execute((TransactionCallback<Void>) status -> {
+			logger.info("Tx - Saving id1");
 			dtoRepository.save(id1);
+			logger.info("Tx - Rollback");
 			status.setRollbackOnly();
+			logger.info("Tx - Done");
 			return null;
 		});
 
