@@ -1,4 +1,4 @@
-package hello;
+package hello.dto;
 
 import java.util.Objects;
 import java.util.StringJoiner;
