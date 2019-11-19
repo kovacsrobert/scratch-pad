@@ -4,16 +4,25 @@ import java.io.Serializable;
 
 public class NotificationMessage implements Serializable {
 
-	private String event;
+	private NotificationMessageEventType event;
+	private String clientId;
 	private String level;
 	private String data;
 
-	public String getEvent() {
+	public NotificationMessageEventType getEvent() {
 		return event;
 	}
 
-	public void setEvent(String event) {
+	public void setEvent(NotificationMessageEventType event) {
 		this.event = event;
+	}
+
+	public String getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
 
 	public String getLevel() {
@@ -36,6 +45,7 @@ public class NotificationMessage implements Serializable {
 	public String toString() {
 		return "NotificationMessage{" +
 				"event='" + event + '\'' +
+				", clientId='" + clientId + '\'' +
 				", level='" + level + '\'' +
 				", data='" + data + '\'' +
 				'}';
