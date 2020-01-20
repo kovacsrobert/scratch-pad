@@ -1,0 +1,43 @@
+
+ext.deps = [
+        springBootVersion: '2.2.0.RELEASE',
+        springFrameworkVersion: '5.2.2.RELEASE',
+        log4jVersion: '2.11.2',
+        commonsLang3Version: '3.9',
+        guavaVersion: '21.0',
+        luceneVersion: '8.4.1'
+]
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+group = 'demo.lucene'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: deps.springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: deps.springBootVersion
+
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: deps.commonsLang3Version
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: deps.log4jVersion
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: deps.log4jVersion
+    compile group: 'com.google.guava', name: 'guava', version: deps.guavaVersion
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+
+    compile group: 'org.apache.lucene', name: 'lucene-core', version: deps.luceneVersion
+    compile group: 'org.apache.lucene', name: 'lucene-queryparser', version: deps.luceneVersion
+    compile group: 'org.apache.lucene', name: 'lucene-analyzers-common', version: deps.luceneVersion
+
+    testCompile group: 'org.testng', name: 'testng', version: '7.1.0'
+}
+
+configurations.all {
+    exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
+    exclude group: 'org.apache.logging.log4j', module: 'log4j-slf4j-impl'
+}
