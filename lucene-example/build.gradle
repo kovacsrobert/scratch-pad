@@ -29,6 +29,8 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: deps.log4jVersion
     compile group: 'com.google.guava', name: 'guava', version: deps.guavaVersion
     compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
 
     compile group: 'org.apache.lucene', name: 'lucene-core', version: deps.luceneVersion
     compile group: 'org.apache.lucene', name: 'lucene-queryparser', version: deps.luceneVersion
