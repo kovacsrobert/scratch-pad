@@ -37,8 +37,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 				.antMatchers("/").permitAll()
 				.anyRequest().authenticated()
 				.and()
-				.httpBasic()
-				.authenticationEntryPoint(basicAuthenticationEntryPoint());
+				.formLogin();
 	}
 
 	@Bean
@@ -46,10 +45,10 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
-	public BasicAuthenticationEntryPoint basicAuthenticationEntryPoint() {
-		BasicAuthenticationEntryPoint entryPoint = new BasicAuthenticationEntryPoint();
-		entryPoint.setRealmName("test-realm");
-		return entryPoint;
-	}
+//	@Bean
+//	public BasicAuthenticationEntryPoint basicAuthenticationEntryPoint() {
+//		BasicAuthenticationEntryPoint entryPoint = new BasicAuthenticationEntryPoint();
+//		entryPoint.setRealmName("test-realm");
+//		return entryPoint;
+//	}
 }
