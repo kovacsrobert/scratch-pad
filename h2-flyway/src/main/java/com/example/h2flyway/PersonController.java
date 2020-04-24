@@ -27,7 +27,7 @@ public class PersonController {
 			person = Optional.of(newPerson);
 		}
 
-		return person.get().getName();
+		return person.get().toString();
 	}
 
 	public static Person createPerson(long id) {
