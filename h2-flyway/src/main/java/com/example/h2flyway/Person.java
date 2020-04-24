@@ -14,6 +14,7 @@ public class Person {
 	private long id;
 	private String name;
 	private int age;
+	private String other;
 
 	public long getId() {
 		return id;
@@ -37,6 +38,14 @@ public class Person {
 
 	public void setAge(int age) {
 		this.age = age;
+	}
+
+	public String getOther() {
+		return other;
+	}
+
+	public void setOther(String otherName) {
+		this.other = otherName;
 	}
 
 	@Override
