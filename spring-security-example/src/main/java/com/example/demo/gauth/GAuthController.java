@@ -1,5 +1,6 @@
-package com.example.demo;
+package com.example.demo.gauth;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,16 +11,13 @@ import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 
 @RestController
 @RequestMapping("/gauth")
-public class GoogleAuthController {
+public class GAuthController {
 
 	private final GoogleAuthenticator googleAuthenticator;
-	private final GAuthCredRepositoryAdapter gAuthCredRepositoryAdapter;
 
-	public GoogleAuthController(
-			GAuthCredRepositoryAdapter gAuthCredRepositoryAdapter) {
-		this.gAuthCredRepositoryAdapter = gAuthCredRepositoryAdapter;
-		this.googleAuthenticator = new GoogleAuthenticator();
-		this.googleAuthenticator.setCredentialRepository(gAuthCredRepositoryAdapter);
+	@Autowired
+	public GAuthController(GoogleAuthenticator googleAuthenticator) {
+		this.googleAuthenticator = googleAuthenticator;
 	}
 
 	@GetMapping("/authorize/{code}")
@@ -40,9 +38,8 @@ public class GoogleAuthController {
 	@GetMapping("/authorize/{userName}/{code}")
 	public String authorizeWithUserName(@PathVariable("userName") String userName, @PathVariable("code") String code) {
 		try {
-			final String secretKey = gAuthCredRepositoryAdapter.getSecretKey(userName);
 			final int verificationCode = Integer.parseInt(code);
-			final boolean isCodeValid = googleAuthenticator.authorize(secretKey, verificationCode);
+			final boolean isCodeValid = googleAuthenticator.authorizeUser(userName, verificationCode);
 			return isCodeValid ? "Successful auth with " + userName : "Failed auth with " + userName;
 		} catch (Exception e) {
 			return e.getMessage();

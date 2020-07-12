@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.security;
 
 import javax.annotation.security.RolesAllowed;
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class DemoController {
+public class SecurityDemoController {
 
 	@GetMapping("/")
 	public String index() {

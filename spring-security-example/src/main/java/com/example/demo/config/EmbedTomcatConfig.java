@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.config;
 
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;

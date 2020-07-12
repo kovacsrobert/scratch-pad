@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.gauth;
 
 import java.util.List;
 import java.util.Optional;
