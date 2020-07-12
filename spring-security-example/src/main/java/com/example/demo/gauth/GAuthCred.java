@@ -1,11 +1,19 @@
 package com.example.demo.gauth;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Table(
@@ -49,6 +57,15 @@ public class GAuthCred {
 
 	public String getScratchCodes() {
 		return scratchCodes;
+	}
+
+	public List<Integer> getScratchCodesAsList() {
+		if (StringUtils.isBlank(scratchCodes)) {
+			return new ArrayList<>();
+		}
+		return Stream.of(scratchCodes.split(":"))
+				.map(Integer::valueOf)
+				.collect(Collectors.toList());
 	}
 
 	public void setScratchCodes(String scratchCodes) {
