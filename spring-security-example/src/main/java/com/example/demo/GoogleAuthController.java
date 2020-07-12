@@ -12,27 +12,40 @@ import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 @RequestMapping("/gauth")
 public class GoogleAuthController {
 
-	private static final String SECRET_KEY = "JB47KDX65ENNHYRCXO5EY2ZGUVR7AJ7U";
-
 	private final GoogleAuthenticator googleAuthenticator;
+	private final GAuthCredRepositoryAdapter gAuthCredRepositoryAdapter;
 
-	private GoogleAuthenticatorKey currentSecret;
-
-	public GoogleAuthController() {
-		googleAuthenticator = new GoogleAuthenticator();
-		currentSecret = new GoogleAuthenticatorKey.Builder(SECRET_KEY).build();
-	}
-
-	@GetMapping("/secret")
-	public String getSecret() {
-		currentSecret = googleAuthenticator.createCredentials();
-		return currentSecret.getKey();
+	public GoogleAuthController(
+			GAuthCredRepositoryAdapter gAuthCredRepositoryAdapter) {
+		this.gAuthCredRepositoryAdapter = gAuthCredRepositoryAdapter;
+		this.googleAuthenticator = new GoogleAuthenticator();
+		this.googleAuthenticator.setCredentialRepository(gAuthCredRepositoryAdapter);
 	}
 
 	@GetMapping("/authorize/{code}")
-	public String authorize(@PathVariable("code") String code) {
-		int verificationCode = Integer.parseInt(code);
-		boolean isCodeValid = googleAuthenticator.authorize(currentSecret.getKey(), verificationCode);
-		return isCodeValid ? "Successful auth" : "Failed auth";
+	public String authorizeWithDefault(@PathVariable("code") String code) {
+		return authorizeWithUserName("default", code);
+	}
+
+	@GetMapping("/register/{userName}")
+	public String registerUserName(@PathVariable("userName") String userName) {
+		try {
+			GoogleAuthenticatorKey userSecretKey = googleAuthenticator.createCredentials(userName);
+			return userSecretKey.getKey();
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+
+	@GetMapping("/authorize/{userName}/{code}")
+	public String authorizeWithUserName(@PathVariable("userName") String userName, @PathVariable("code") String code) {
+		try {
+			final String secretKey = gAuthCredRepositoryAdapter.getSecretKey(userName);
+			final int verificationCode = Integer.parseInt(code);
+			final boolean isCodeValid = googleAuthenticator.authorize(secretKey, verificationCode);
+			return isCodeValid ? "Successful auth with " + userName : "Failed auth with " + userName;
+		} catch (Exception e) {
+			return e.getMessage();
+		}
 	}
 }

@@ -1,0 +1,2 @@
+INSERT INTO gauth_creds (user_name, secret_key) VALUES ('default', 'JB47KDX65ENNHYRCXO5EY2ZGUVR7AJ7U');
+INSERT INTO gauth_creds (user_name, secret_key) VALUES ('john', 'WXDIQYXAIV7QQZYXERHXR5WNOVNCBHRQ');
