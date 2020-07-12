@@ -20,6 +20,8 @@ public class GAuthCred {
 	private String userName;
 	@Column(name="secret_key", length=250, nullable=false)
 	private String secretKey;
+	@Column(name="scratch_codes", length=250, nullable=false)
+	private String scratchCodes;
 
 	public int getId() {
 		return id;
@@ -43,5 +45,13 @@ public class GAuthCred {
 
 	public void setSecretKey(String secretKey) {
 		this.secretKey = secretKey;
+	}
+
+	public String getScratchCodes() {
+		return scratchCodes;
+	}
+
+	public void setScratchCodes(String scratchCodes) {
+		this.scratchCodes = scratchCodes;
 	}
 }

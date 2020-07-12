@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Joiner;
 import com.warrenstrange.googleauth.ICredentialRepository;
 
 @Service
@@ -30,6 +31,7 @@ public class GAuthCredRepositoryAdapter implements ICredentialRepository {
 		GAuthCred gAuthCred = new GAuthCred();
 		gAuthCred.setUserName(userName);
 		gAuthCred.setSecretKey(secretKey);
+		gAuthCred.setScratchCodes(Joiner.on(':').join(scratchCodes));
 		gAuthCredRepository.save(gAuthCred);
 	}
 }

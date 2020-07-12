@@ -1,8 +1,8 @@
 + google auth create secret key and authenticate with 6 digit key
 + generate separate secret key for usernames
 + store user names and secret keys in db
++ use scratch codes to authenticate as a fallback option, store in db
 
-- use scratch codes to authenticate one-time as a fallback option, store in db
 - generate QR code online
 - generate QR code offline
 - encrypt secret keys, scratch codes in db
