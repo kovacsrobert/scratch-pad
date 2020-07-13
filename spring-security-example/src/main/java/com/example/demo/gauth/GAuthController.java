@@ -1,10 +1,11 @@
 package com.example.demo.gauth;
 
+import java.io.File;
 import java.util.Optional;
-import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
 import com.warrenstrange.googleauth.GoogleAuthenticatorConfig;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
-import com.warrenstrange.googleauth.GoogleAuthenticatorQRGenerator;
 
 @RestController
 @RequestMapping("/gauth")
@@ -87,6 +87,7 @@ public class GAuthController {
 
 	@GetMapping("/qr/{userName}")
 	public String generateQrCode(HttpServletResponse response, @PathVariable("userName") String userName) {
+		File qrFile = null;
 		try {
 			Optional<GAuthCred> gAuthCredOptional = gAuthCredRepository.findByUserName(userName);
 			if (gAuthCredOptional.isPresent()) {
@@ -96,8 +97,10 @@ public class GAuthController {
 						.setVerificationCode(googleAuthenticator.getTotpPassword(gAuthCred.getSecretKey()))
 						.setScratchCodes(gAuthCred.getScratchCodesAsList())
 						.build();
-				String otpAuthURL = GoogleAuthenticatorQRGenerator.getOtpAuthURL("test", "test", credentials);
-				byte[] imageBytes = restTemplate.getForObject(otpAuthURL, byte[].class);
+				String data = "otpauth://totp/" + userName + "?secret=" + credentials.getKey() + "&issuer=DemoApp";
+				qrFile = File.createTempFile("qr-code-test", null);
+				QrCodeUtil.write(qrFile, data);
+				byte[] imageBytes = FileUtils.readFileToByteArray(qrFile);
 				response.setHeader("Content-disposition", "attachment; filename=gauth_qr.png");
 				response.setContentLength(imageBytes.length);
 				IOUtils.write(imageBytes, response.getOutputStream());
@@ -105,6 +108,8 @@ public class GAuthController {
 			return "Not found user for " + userName;
 		} catch (Exception e) {
 			return e.getMessage();
+		} finally {
+			FileUtils.deleteQuietly(qrFile);
 		}
 	}
 }

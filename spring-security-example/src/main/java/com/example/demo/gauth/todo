@@ -2,7 +2,7 @@
 + generate separate secret key for usernames
 + store user names and secret keys in db
 + use scratch codes to authenticate as a fallback option, store in db
++ generate QR code online
++ generate QR code offline
 
-- generate QR code online
-- generate QR code offline
 - encrypt secret keys, scratch codes in db
