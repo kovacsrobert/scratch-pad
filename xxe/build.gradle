@@ -1,0 +1,24 @@
+plugins {
+	id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation group: 'org.springframework', name: 'spring-core', version: '5.2.9.RELEASE'
+	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
+	// implementation group: 'javax.xml', name: 'jaxp-api', version: '1.4.2'
+	implementation group: 'javax.xml.parsers', name: 'jaxp-api', version: '1.4.5'
+
+	testImplementation group: 'org.testng', name: 'testng', version: '7.3.0'
+}
+
+test {
+	useTestNG()
+}
