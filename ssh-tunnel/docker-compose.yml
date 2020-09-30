@@ -1,0 +1,24 @@
+version: '2.1'
+
+services:
+  server:
+    image: linuxserver/openssh-server
+    container_name: openssh-server
+    ports:
+      - "2222:2222"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - USER_NAME=test
+      - PUBLIC_KEY_FILE=/tmp/sh-test.pub
+      #- PUBLIC_KEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDjREIdNuhfNFLDJ2WeTLal9NpiR6XXMSLVbJ4EGrAfd6XXT0FZBzQXIwyTpT2pXkFp8iuOI6ugtM2SVv8+P0gqajYtBHN/WC8bcVVvSPMkHOd2uzr7pZjgewwBPBzDcdnj79sIbidvS29WDLLwayDfa5OYj0ObV9QLtzmWylPYLIN+6IyjvpVm45H5pWMWpjeh4Cf/rxTS9UGw8pbEAbanZnofS+YjdTY+TXy/ovV6qyiTvVmKOhgt/1xYevMCNFLoVEy6dJkEoT5uk335bEA1hRL6rbNmwnIhvlEvrXYv5AiyAMoII1SNu6RpCDrp80isRxFhN0Z9cFNWm+njlUdzPAzyTDmdJgGATBpz/zkhlffU6EidxelspYYF0mlWu21dRqFrfp5+oOpaTy+w32VeZxj5GQBU+WnZxTlgO2G/ZB0BTTNsaRw51Uf1q4u1lY0X+MeFjSIBcRN0jFxz6CldqSXoCj0xuh2n/+exHKlZbXqYNNUr7jdDixukVFDrdqy2k3EBs8pY15+fISVWtWpvNOEySx7In/l00O3gMA0Scj6cP4JT02QaPrmyYNpOA/Yz2+TibllSZAwEtxnxvdDDgckfB0gbtmHoxZdqbP5tkt/qjGaBRQuZRAdNkOmA+CYRHbqQrSYMBQu5OunnRlyQj3sEhMjrj0LjkeUDpUxr+Q== robert.kovacs.centacc@gmail.com
+      #- PUBLIC_KEY_FILE=./ssh-test.pub
+      #- SUDO_ACCESS=true
+      #- USER_PASSWORD=sshpass
+    volumes:
+      - ./ssh-server-appdata:/config
+      - ./ssh-test.pub:/tmp/sh-test.pub
+    restart: unless-stopped
+
+#volumes:
+#  openssh-server-volume:
