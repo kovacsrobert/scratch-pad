@@ -1,0 +1,4 @@
+compile: gcc caf.c -o caf -fno-stack-protector -z execstack -no-pie
+
+
+sudo socat TCP-LISTEN:1337,nodelay,reuseaddr,fork EXEC:"stdbuf -i0 -o0 -e0 ./caf"
