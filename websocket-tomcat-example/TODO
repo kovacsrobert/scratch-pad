@@ -1,0 +1,5 @@
+
+TODO
++ create spring boot app
++ add index page with websocket
+- create docker tomcat webapp behind apache proxy
